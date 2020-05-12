@@ -3,6 +3,7 @@ import { Router } from 'react-router-dom'
 import { useAuth0 } from './utils/hooks'
 import { Main } from './components/Main'
 import { Nav } from './components/Nav'
+import { TodoPreview } from './components/TodoPreview'
 import history from './utils/history'
 import './tailwind.generated.css'
 
@@ -19,7 +20,7 @@ function App() {
       {!loading && (
         <>
           {isAuthenticated && <Main />}
-          {!isAuthenticated && <p>Log in</p>}
+          {!isAuthenticated && <TodoPreview />}
         </>
       )}
     </Router>

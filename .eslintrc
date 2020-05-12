@@ -65,6 +65,7 @@
     "react/jsx-wrap-multilines": "off",
     "react/destructuring-assignment": "off",
     "consistent-return": "off",
-    "@typescript-eslint/semi": ["error", "never"]
+    "@typescript-eslint/semi": ["error", "never"],
+    "lines-between-class-members": "off"
   }
 }
