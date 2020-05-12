@@ -24,3 +24,5 @@ yarn-error.log*
 
 #jetbrains
 .idea
+
+src/tailwind.generated.css
