@@ -1,11 +1,39 @@
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
+import { Switch, Route } from 'react-router-dom'
 import { TodoItem } from '../models/TodoItem'
-import { TodoInput } from './TodoInput'
-import { TodoList } from './TodoList'
+import { TodoLists } from './TodoLists'
+import { EditTodoList } from './EditTodoList'
+import { TodoList } from '../models/TodoList'
 
 export const Content = () => {
+  const [todoLists, setTodoLists] = useState<TodoList[]>([
+    { 
+      id: 1,
+      name: 'May, 1 2020',
+      todos: [
+        { id: 1, name: 'Change the world', isComplete: false },
+        { id: 2, name: 'Do something amazing', isComplete: true },
+        { id: 3, name: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud', isComplete: false },
+      ]
+    },
+    {
+      id: 2,
+      name: 'Chores',
+      todos: [
+        { id: 4, name: 'Walk the dog', isComplete: false },
+        { id: 5, name: 'Get groceries', isComplete: true }
+      ]
+    },
+    {
+      id: 3,
+      name: 'Work Project',
+      todos: [
+        { id: 6, name: 'Create report', isComplete: false }
+      ]
+    }
+  ])
+  
+  
   const [todos, setTodos] = useState<TodoItem[]>( [
     { id: 1, name: 'Change the world', isComplete: false },
     { id: 2, name: 'Do something amazing', isComplete: true },
@@ -17,19 +45,13 @@ export const Content = () => {
   }
 
   return (
-    <>
-      <div className="block flex align-items-center mt-8">
-        <span className="fa-layers fa-fw fa-3x block m-auto">
-          <FontAwesomeIcon icon={faCircle} className="text-teal-500" />
-          <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
-        </span>
-      </div>
-      <div className="text-center text-teal-500 font-thin text-4xl mt-5">
-        <h1>Todo List</h1>
-      </div>
-      
-      <TodoInput addTodo={addTodo} />
-      <TodoList todos={todos} setTodos={setTodos} />
-    </>
+    <Switch>
+      <Route path="/todo">
+        <EditTodoList todos={todos} setTodos={setTodos} addTodo={addTodo} />
+      </Route>
+      <Route path="/">
+        <TodoLists lists={todoLists} />
+      </Route>
+    </Switch>
   )
 }
