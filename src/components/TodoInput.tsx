@@ -20,7 +20,7 @@ export const TodoInput = (props: ITodoInputProps) => {
   }
   
   return (
-    <div className="flex items-center mx-auto justify-center md:py-0 border-gray-700 max-w-sm mt-8">
+    <div className="flex items-center mx-auto justify-center md:py-0 border-gray-700 max-w-sm mt-5">
       <div className="flex flex-row rounded overflow-hidden w-full">
         <input
           className="py-3 px-4 text-gray-800 border-gray-300 border outline-none placeholder-gray-500 focus:bg-gray-100 w-full"
