@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { Link } from 'react-router-dom'
 
 interface ITodoListItemProps {
   todoList: string
@@ -10,40 +11,47 @@ interface ITodoListItemProps {
 
 export const TodoListLink = (props: ITodoListItemProps) => {
   const { todoList, className } = props
-  const [editing, setEditing] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-
-
-  const toggleEditing = () => {
-    setEditing(!editing)
-  }
 
   return (
     <li className={className}>
       <div className="relative w-100 group">
-        <div className=" inset-0 flex items-center py-2">
-          {!editing && (
-            <>
-              {!confirmDelete && (
-                <button
-                  type="button"
-                  className={classNames(
-                    'ml-4 font-light text-center hover:text-teal-500 w-full'
-                  )}
-                  onClick={toggleEditing}
-                >
-                  {todoList}
-                </button>
+        <div className=" inset-0 flex items-center">
+          {!confirmDelete && (
+            <Link
+              to="/todo"
+              className={classNames(
+                'ml-4 font-light text-center hover:text-teal-500 w-full py-2'
               )}
-            </>
+            >
+              {todoList}
+            </Link>
           )}
 
           {confirmDelete && (
-            <p className="ml-4 text-pink-700">Are you sure?</p>
+            <>
+              <p className="ml-4 text-pink-700  py-2">Are you sure?</p>
+              <div className="ml-auto inline-flex px-4">
+                <button
+                  onClick={()=>{}}
+                  type="button"
+                  className="transition-all duration-200 ease-in-out text-gray-300 hover:text-pink-700 mr-4"
+                >
+                  Yes
+                </button>
+                <button
+                  onClick={() => setConfirmDelete(false)}
+                  type="button"
+                  className="transition-all duration-200 ease-in-out text-gray-300 hover:text-gray-500"
+                >
+                  No
+                </button>
+              </div>
+            </>
           )}
 
-          {!editing && !confirmDelete && (
-            <div className="ml-auto inline-flex px-4">
+          {!confirmDelete && (
+            <div className="ml-auto inline-flex px-4  py-2">
               <button
                 onClick={() => {setConfirmDelete(true)}}
                 type="button"

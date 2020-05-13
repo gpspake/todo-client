@@ -14,9 +14,12 @@ interface ITodoListProps {
 export const TodoLists = (props: ITodoListProps) => {
   return (
     <>
-      <Link className="block flex align-items-center mt-8" to="/todo">
-        <span className="fa-layers fa-fw fa-3x block m-auto">
-          <FontAwesomeIcon icon={faCircle} className="text-teal-500" />
+      <Link className="block flex align-items-center mt-8 " to="/todo">
+        <span className="fa-layers fa-fw fa-3x block m-auto group">
+          <FontAwesomeIcon 
+            icon={faCircle} 
+            className="transition-all duration-200 ease-in-out text-teal-500 group-hover:text-teal-600" 
+          />
           <FontAwesomeIcon icon={faPlus} inverse transform="shrink-8" />
         </span>
       </Link>

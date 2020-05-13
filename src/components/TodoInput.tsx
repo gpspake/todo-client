@@ -33,7 +33,7 @@ export const TodoInput = (props: ITodoInputProps) => {
         <button
           onClick={addTodo}
           type="button"
-          className="py-3 px-4 bg-teal-500 text-gray-100 hover:bg-teal-600"
+          className="py-3 px-4 bg-teal-500 text-gray-100 hover:bg-teal-600 transition-all duration-200 ease-in-out"
         >
           Add
         </button>
