@@ -4,6 +4,7 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import { Auth0Provider } from './utils/react-auth0-wrapper'
 import history from './utils/history'
+import { TodoListsContext, todoLists } from './store/todolists'
 
 const onRedirectCallback = (appState?: { targetUrl: string; }) => {
   history.push(
@@ -15,6 +16,7 @@ const onRedirectCallback = (appState?: { targetUrl: string; }) => {
 
 ReactDOM.render(
   <React.StrictMode>
+    
     <Auth0Provider
       domain={process.env.REACT_APP_AUTH0_DOMAIN as string}
       client_id={process.env.REACT_APP_AUTH0_CLIENT_ID as string}
@@ -22,7 +24,9 @@ ReactDOM.render(
       audience={process.env.REACT_APP_AUTH0_AUDIENCE as string}
       onRedirectCallback={onRedirectCallback}
     >
-      <App />
+      <TodoListsContext.Provider value={todoLists}>
+        <App />
+      </TodoListsContext.Provider>
     </Auth0Provider>
   </React.StrictMode>,
   document.getElementById('root')
