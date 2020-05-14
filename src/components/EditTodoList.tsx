@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { useContext, useState } from 'react'
+import { Link, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList, faSave } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-regular-svg-icons'
@@ -8,22 +8,34 @@ import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList as TodoListComponent } from './TodoList'
-import { TodoList } from '../models/TodoList'
+import { TodoListsContext } from '../store/todolists'
+
 
 interface ITodoListProps {
-  todoList: TodoList
-  setTodoList: (todoList: TodoList) => void
-  addTodo: (todo: TodoItem) => void
+  // todoList: TodoList
+  // setTodoList: (todoList: TodoList) => void
+  // addTodo: (todo: TodoItem) => void
 }
 
 export const EditTodoList = (props: ITodoListProps) => {
 
-  const { todoList, setTodoList, addTodo } = props
+  const { todoListId } = useParams()
+  const { todoLists, setTodoList } = useContext(TodoListsContext)
+  const todoListIndex = todoLists.findIndex(
+    list => todoListId === list.id.toString()
+  )
+  const todoList = todoLists[todoListIndex]
+
+  
+  // const { setTodoList, addTodo } = props
   const [todoListName, setTodoListName] = useState(todoList.name)
   const [editingTodoListName, setEditingTodoListName] = useState(false)
   
   const setTodos = (todos: TodoItem[]) => {
-    setTodoList({ ...todoList, todos })
+    if(todoList) {
+      const list = { ...todoList, todos }
+      setTodoList(todoListIndex, list)
+    }
   }
   
   const onTodoListNameChange = (
@@ -33,13 +45,24 @@ export const EditTodoList = (props: ITodoListProps) => {
   }
   
   const cancelEditTodoListName = () => {
-    setTodoListName(todoList.name)
+    if(todoList) {
+      setTodoListName(todoList.name)
+    }
     setEditingTodoListName(false)
   }
   
   const saveTodoListName = () => {
-    setTodoList({ ...todoList, name: todoListName })
+    if(todoList) {
+      const list = { ...todoList, name: todoListName }
+      setTodoList(todoListIndex, list)
+    }
     setEditingTodoListName(false)
+  }
+  
+  const addTodo = (todo: TodoItem) => {
+    const todos = [...todoLists[todoListIndex].todos, todo]
+    const list = { ...todoList, todos }
+    setTodoList(todoListIndex, list)
   }
   
   return (
@@ -107,7 +130,10 @@ export const EditTodoList = (props: ITodoListProps) => {
       </div>
 
       <TodoInput addTodo={addTodo} />
-      <TodoListComponent todos={todoList.todos} setTodos={setTodos} />
+      <TodoListComponent 
+        todos={todoList ? todoList.todos : []} 
+        setTodos={setTodos} 
+      />
     </>
   )
 }

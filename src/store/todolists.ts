@@ -1,30 +1,16 @@
 import { createContext } from 'react'
+import { TodoList } from '../models/TodoList'
 
-export const todoLists = [
-  {
-    id: 1,
-    name: 'May, 1 2020',
-    todos: [
-      { id: 1, name: 'Change the world', isComplete: false },
-      { id: 2, name: 'Do something amazing', isComplete: true },
-      { id: 3, name: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud', isComplete: false },
-    ]
-  },
-  {
-    id: 2,
-    name: 'Chores',
-    todos: [
-      { id: 4, name: 'Walk the dog', isComplete: false },
-      { id: 5, name: 'Get groceries', isComplete: true }
-    ]
-  },
-  {
-    id: 3,
-    name: 'Work Project',
-    todos: [
-      { id: 6, name: 'Create report', isComplete: false }
-    ]
-  }
-]
+interface ITodoListsContext {
+  todoLists: TodoList[]
+  setTodoLists: (updatedTodoLists: TodoList[]) => void,
+  setTodoList: (index: number, todoList: TodoList) => void
+}
 
-export const TodoListsContext = createContext(todoLists)
+const todoListsContext: ITodoListsContext = {
+  todoLists: [],
+  setTodoLists: (updatedTodoLists: TodoList[]) => {},
+  setTodoList: (index: number, todoList: TodoList) => {}
+}
+
+export const TodoListsContext = createContext(todoListsContext)

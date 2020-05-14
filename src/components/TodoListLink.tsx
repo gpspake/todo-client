@@ -3,9 +3,10 @@ import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
+import { TodoList } from '../models/TodoList'
 
 interface ITodoListItemProps {
-  todoList: string
+  todoList: TodoList
   className?: string
 }
 
@@ -19,12 +20,12 @@ export const TodoListLink = (props: ITodoListItemProps) => {
         <div className=" inset-0 flex items-center">
           {!confirmDelete && (
             <Link
-              to="/todo"
+              to={`/todo/${todoList.id}`}
               className={classNames(
                 'ml-4 font-light text-center hover:text-teal-500 w-full py-2'
               )}
             >
-              {todoList}
+              {todoList.name}
             </Link>
           )}
 

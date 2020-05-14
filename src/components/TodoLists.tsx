@@ -1,17 +1,15 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { TodoListLink } from './TodoListLink'
-import { TodoList } from '../models/TodoList'
+import { TodoListsContext } from '../store/todolists'
 
-interface ITodoListProps {
-  className?: string
-  lists: TodoList[]
-}
+export const TodoLists = () => {
 
-export const TodoLists = (props: ITodoListProps) => {
+  const { todoLists } = useContext(TodoListsContext)
+  
   return (
     <>
       <Link className="block flex align-items-center mt-8 " to="/todo">
@@ -26,8 +24,12 @@ export const TodoLists = (props: ITodoListProps) => {
       
       <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto mt-8 border border-gray-300">
         <ul>
-          {props.lists.map((list, i) => (
-            <TodoListLink key={list.id} todoList={list.name} className={classNames({ 'border-t': !!i })} />
+          {todoLists.map((list, i) => (
+            <TodoListLink 
+              key={list.id} 
+              todoList={list} 
+              className={classNames({ 'border-t': !!i })} 
+            />
           ))}
         </ul>
       </div>
