@@ -1,29 +1,26 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList, faSave } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-regular-svg-icons'
 import TextareaAutosize from 'react-textarea-autosize'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
+import { format } from 'date-fns'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList } from '../models/TodoList'
+import { TodoListsContext } from '../store/todolists'
+import {Redirect} from 'react-router'
 
 export const CreateTodoList = () => {
 
-
+  const { addTodoList } = useContext(TodoListsContext)
   const [newTodoList, setNewTodoList] = useState(
-    { ...new TodoList(), name: new Date().toString() }
+    { ...new TodoList(), name: format(new Date(), 'PPPP') }
   )
   const [todoListNameRef, setTodoListNameRef] = useState(newTodoList.name)
   const [editingTodoListName, setEditingTodoListName] = useState(false)
-
-  // const setTodos = (todos: TodoItem[]) => {
-  //   if(todoList) {
-  //     const list = { ...todoList, todos }
-  //     setTodoList(todoListIndex, list)
-  //   }
-  // }
+  const [redirectToList, setRedirectToList] = useState(0)
 
   const onTodoListNameChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
@@ -43,13 +40,15 @@ export const CreateTodoList = () => {
   }
 
   const addTodo = (todo: TodoItem) => {
-    // const todos = [...todoLists[todoListIndex].todos, todo]
-    // const list = { ...todoList, todos }
-    // setTodoList(todoListIndex, list)
+    const todoList = { ...newTodoList, todos: [todo] }
+    const id = addTodoList(todoList)
+    setRedirectToList(id)
   }
 
   return (
     <>
+      {redirectToList && <Redirect to={`/todo/${redirectToList}`} />}
+      
       <Link className="block flex align-items-center mt-8" to="/">
         <span className="fa-layers fa-fw fa-3x block m-auto group">
           <FontAwesomeIcon

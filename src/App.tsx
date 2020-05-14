@@ -8,11 +8,9 @@ import history from './utils/history'
 import './tailwind.generated.css'
 import { TodoListsContext } from './store/todolists'
 import { TodoList } from './models/TodoList'
-import { TodoItem } from './models/TodoItem'
 
 function App() {
   const { isAuthenticated, loading } = useAuth0()
-
   const [todoLists, setTodoLists] = useState<TodoList[]>([
     {
       id: 1,
@@ -51,16 +49,30 @@ function App() {
       ...todoLists.slice(todoListIndex+1, todoLists.length)
     ])
   }
+  
+  const addTodoList = (list: TodoList) => {
+    const id = todoLists.length + 2
+    const todoList = { ...list, id }
+    
+    setTodoLists([
+      ...todoLists,
+      todoList
+    ])
+    
+    return id
+  }
 
   return (
-    <TodoListsContext.Provider value={{ todoLists, setTodoLists, setTodoList }}>
+    <TodoListsContext.Provider 
+      value={{ todoLists, setTodoLists, setTodoList, addTodoList }}
+    >
       <Router history={history}>
         <Nav />
         {!loading && (
-        <>
-          {isAuthenticated && <Main />}
-          {!isAuthenticated && <TodoPreview />}
-        </>
+          <>
+            {isAuthenticated && <Main />}
+            {!isAuthenticated && <TodoPreview />}
+          </>
         )}
       </Router>
     </TodoListsContext.Provider>
