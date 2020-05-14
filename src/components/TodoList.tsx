@@ -13,7 +13,7 @@ export const TodoList = (props: ITodoListProps) => {
   const { todos, setTodos } = props
   
   return (
-    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto mt-8 border border-gray-300">
+    <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto my-8 border border-gray-300">
       <ul>
         {todos.map((todo, i) => {
           
