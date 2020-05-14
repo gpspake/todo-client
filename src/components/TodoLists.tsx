@@ -12,7 +12,7 @@ export const TodoLists = () => {
   
   return (
     <>
-      <Link className="block flex align-items-center mt-8 " to="/todo">
+      <Link className="block flex align-items-center mt-8 " to="/todo/new">
         <span className="fa-layers fa-fw fa-3x block m-auto group">
           <FontAwesomeIcon 
             icon={faCircle} 

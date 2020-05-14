@@ -1,5 +1,5 @@
-import React, { useContext, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList, faSave } from '@fortawesome/free-solid-svg-icons'
 import { faEdit } from '@fortawesome/free-regular-svg-icons'
@@ -7,61 +7,54 @@ import TextareaAutosize from 'react-textarea-autosize'
 import { faTimes } from '@fortawesome/free-solid-svg-icons/faTimes'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
-import { TodoList as TodoListComponent } from './TodoList'
-import { TodoListsContext } from '../store/todolists'
+import { TodoList } from '../models/TodoList'
 
-export const EditTodoList = () => {
+export const CreateTodoList = () => {
 
-  const { todoListId } = useParams()
-  const { todoLists, setTodoList } = useContext(TodoListsContext)
-  const todoListIndex = todoLists.findIndex(
-    list => todoListId === list.id.toString()
+
+  const [newTodoList, setNewTodoList] = useState(
+    { ...new TodoList(), name: new Date().toString() }
   )
-  const todoList = todoLists[todoListIndex]
-  const [todoListName, setTodoListName] = useState(todoList.name)
+  const [todoListNameRef, setTodoListNameRef] = useState(newTodoList.name)
   const [editingTodoListName, setEditingTodoListName] = useState(false)
-  
-  const setTodos = (todos: TodoItem[]) => {
-    if(todoList) {
-      const list = { ...todoList, todos }
-      setTodoList(todoListIndex, list)
-    }
-  }
-  
+
+  // const setTodos = (todos: TodoItem[]) => {
+  //   if(todoList) {
+  //     const list = { ...todoList, todos }
+  //     setTodoList(todoListIndex, list)
+  //   }
+  // }
+
   const onTodoListNameChange = (
     event: React.ChangeEvent<HTMLTextAreaElement>
   ) => {
-    setTodoListName(event.target.value)
+    const name = event.target.value
+    setNewTodoList({ ...newTodoList, name })
   }
-  
+
   const cancelEditTodoListName = () => {
-    if(todoList) {
-      setTodoListName(todoList.name)
-    }
+    setNewTodoList({ ...newTodoList, name: todoListNameRef })
     setEditingTodoListName(false)
   }
-  
+
   const saveTodoListName = () => {
-    if(todoList) {
-      const list = { ...todoList, name: todoListName }
-      setTodoList(todoListIndex, list)
-    }
+    setTodoListNameRef(newTodoList.name)
     setEditingTodoListName(false)
   }
-  
+
   const addTodo = (todo: TodoItem) => {
-    const todos = [...todoLists[todoListIndex].todos, todo]
-    const list = { ...todoList, todos }
-    setTodoList(todoListIndex, list)
+    // const todos = [...todoLists[todoListIndex].todos, todo]
+    // const list = { ...todoList, todos }
+    // setTodoList(todoListIndex, list)
   }
-  
+
   return (
     <>
       <Link className="block flex align-items-center mt-8" to="/">
         <span className="fa-layers fa-fw fa-3x block m-auto group">
-          <FontAwesomeIcon 
-            icon={faCircle} 
-            className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600" 
+          <FontAwesomeIcon
+            icon={faCircle}
+            className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
           />
           <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
         </span>
@@ -71,7 +64,7 @@ export const EditTodoList = () => {
         {!editingTodoListName && (
           <button type="button" className="font-thin text-4xl group relative" onClick={() => {setEditingTodoListName(true)}}>
             <h1 className="inline hover:text-teal-600">
-              {todoListName}
+              {newTodoList.name}
             </h1>
             <FontAwesomeIcon
               icon={faEdit}
@@ -85,7 +78,7 @@ export const EditTodoList = () => {
             <TextareaAutosize
               className="m-auto form-textarea block border-0 font-thin resize-none text-4xl focus:shadow-none p-0 text-center max-w-sm"
               placeholder="Enter a name for this list"
-              value={todoListName}
+              value={newTodoList.name}
               onChange={onTodoListNameChange}
               inputRef={(node) => {
                 if (node) {
@@ -120,10 +113,6 @@ export const EditTodoList = () => {
       </div>
 
       <TodoInput addTodo={addTodo} />
-      <TodoListComponent 
-        todos={todoList ? todoList.todos : []} 
-        setTodos={setTodos} 
-      />
     </>
   )
 }
