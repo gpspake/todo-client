@@ -36,10 +36,19 @@ export const TodoListItem = (props: ITodoListItemProps) => {
     toggleEditing()
   }
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if(event.key === 'Enter'){
+      toggleEditing()
+    }
+    if(event.key === 'Escape'){
+      cancelEditing()
+    }
+  }
+
   return (
     <li className={className}>
       <div className="relative w-100 group">
-        <div className=" inset-0 flex items-center py-2">
+        <div className=" inset-0 flex items-center py-3">
           {!editing && (
             <>
               <input
@@ -79,6 +88,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
                 placeholder="Enter some long form content."
                 value={name}
                 onChange={onChange}
+                onKeyDown={handleKeyDown}
                 inputRef={(node) => {
                   if (node) {
                     node.focus()
