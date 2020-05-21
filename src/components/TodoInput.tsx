@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TodoItem } from '../models/TodoItem'
 
 interface ITodoInputProps {
-  addTodo: (todo: TodoItem) => void
+  onAddTodoItem: (todoItem: TodoItem) => void
   placeHolder?: string
 }
 
@@ -13,16 +13,16 @@ export const TodoInput = (props: ITodoInputProps) => {
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value)
   }
-  
-  const addTodo = () => {
-    props.addTodo({ ...new TodoItem(), name })
-    setName('')
-  }
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
     if(event.key === 'Enter') {
-      addTodo()
+      onClickAdd()
     }
+  }
+  
+  const onClickAdd = () => {
+    props.onAddTodoItem({ ...new TodoItem(), name })
+    setName('')
   }
   
   return (
@@ -38,7 +38,7 @@ export const TodoInput = (props: ITodoInputProps) => {
           onKeyPress={handleKeyPress}
         />
         <button
-          onClick={addTodo}
+          onClick={onClickAdd}
           type="button"
           className="py-3 px-4 bg-teal-500 text-gray-100 hover:bg-teal-600 transition-all duration-200 ease-in-out"
         >

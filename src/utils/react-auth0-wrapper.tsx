@@ -1,24 +1,25 @@
 import React, { useState, useEffect, useContext } from 'react'
 import createAuth0Client, { Auth0ClientOptions } from '@auth0/auth0-spa-js'
+import axios from 'axios'
+
+interface Auth0ProviderProps extends Auth0ClientOptions {
+  onRedirectCallback?: (appState: any) => void;
+  children: React.ReactNode;
+  initOptions?: Auth0ClientOptions;
+}
 
 export interface ContextValue {
   isAuthenticated?: boolean;
   user?: any;
   loading?: boolean;
   popupOpen?: boolean;
-  loginWithPopup?: () => void;
+  loginWithPopup: (params: any) => void;
   handleRedirectCallback?: () => void;
   getIdTokenClaims?: (...p: any) => void;
   loginWithRedirect?: (...p: any) => void;
   getTokenSilently?: (...p: any) => void;
-  getTokensWithPopup?: (...p: any) => void;
+  getTokenWithPopup?: (...p: any) => void;
   logout?: (...p: any) => void;
-}
-
-interface Auth0ProviderProps extends Auth0ClientOptions {
-  onRedirectCallback?: (appState: any) => void;
-  children: React.ReactNode;
-  initOptions?: Auth0ClientOptions;
 }
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
@@ -28,10 +29,30 @@ const DEFAULT_REDIRECT_CALLBACK = () =>
     window.location.pathname
   )
 
-export const Auth0Context = React.createContext<ContextValue>(
-  {} as ContextValue
-)
+export const Auth0Context = React.createContext<ContextValue>({
+  isAuthenticated: false,
+  user: {},
+  loading: true,
+  popupOpen: false,
+  loginWithPopup: (params: any) => {},
+  handleRedirectCallback: () => {},
+  getIdTokenClaims: (...p: any) => {},
+  loginWithRedirect: (...p: any) => {},
+  getTokenSilently: (...p: any) => {},
+  getTokenWithPopup: (...p: any) => {},
+  logout: (...p: any) => {}
+})
 export const useAuth0 = () => useContext(Auth0Context)
+
+const setAxiosTokenInterceptor = async (accessToken: string): Promise<void> => {
+  axios.interceptors.request.use(async config => {
+    const requestConfig = config
+    if (accessToken) {
+      requestConfig.headers.common.Authorization = `Bearer ${accessToken}`
+    } 
+    return requestConfig
+  })
+}
 
 export const Auth0Provider = (
   {
@@ -44,7 +65,7 @@ export const Auth0Provider = (
   const [auth0Client, setAuth0] = useState()
   const [loading, setLoading] = useState(true)
   const [popupOpen, setPopupOpen] = useState(false)
-    
+  
   useEffect(() => {
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions)
@@ -56,7 +77,7 @@ export const Auth0Provider = (
       }
 
       auth0FromHook.isAuthenticated().then(
-        authenticated => {
+        async authenticated => {
           setIsAuthenticated(authenticated)
           if (authenticated) {
             auth0FromHook.getUser().then(
@@ -64,15 +85,15 @@ export const Auth0Provider = (
                 setUser(auth0User)
               }
             )
+            const token = await auth0FromHook.getTokenSilently()
+            setAxiosTokenInterceptor(token).then(
+              () => {setLoading(false)}
+            )
           }
         }
       )
 
       
-
-      
-
-      setLoading(false)
     }
     initAuth0().catch()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -113,7 +134,7 @@ export const Auth0Provider = (
         getIdTokenClaims: (...p: any) => auth0Client.getIdTokenClaims(...p),
         loginWithRedirect: (...p: any) => auth0Client.loginWithRedirect(...p),
         getTokenSilently: (...p: any) => auth0Client.getTokenSilently(...p),
-        getTokensWithPopup: (...p: any) => auth0Client.getTokensWithPopup(...p),
+        getTokenWithPopup: (...p: any) => auth0Client.getTokensWithPopup(...p),
         logout: (...p: any) => auth0Client.logout(...p)
       }}
     >

@@ -36,8 +36,12 @@ export const Nav = () => {
           <div className="ml-auto">
             {user && (
               <ProfileIcon>
-                <div className="bg-white absolute rounded border right-0 mr-4 p-4 text-center shadow-lg">
-                  <img className="h-20 rounded-full mx-auto" src={user.picture} />
+                <div className="bg-white absolute rounded border right-0 mr-4 p-4 text-center shadow-lg z-10">
+                  <img 
+                    className="h-20 rounded-full mx-auto" 
+                    src={user.picture}
+                    alt=""
+                  />
                   <p className="text-gray-800 text-lg capitalize mt-4">{user.nickname}</p>
                   <p className="text-gray-600 font-light">{user.email}</p>
                   <button

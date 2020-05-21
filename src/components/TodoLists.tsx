@@ -1,14 +1,19 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
+import { useQuery } from 'react-query'
 import { TodoListLink } from './TodoListLink'
-import { TodoListsContext } from '../store/todolists'
+import { deleteTodoList, fetchTodoLists } from '../utils/todo-api-client'
 
 export const TodoLists = () => {
-
-  const { todoLists, setTodoLists } = useContext(TodoListsContext)
+  
+  const { 
+    // status: fetchTodoListsStatus,
+    data: fetchTodoListsData, 
+    // error: fetchTodoListsError
+  } = useQuery('todoLists', fetchTodoLists)
   
   return (
     <>
@@ -22,31 +27,21 @@ export const TodoLists = () => {
         </span>
       </Link>
       
-      {!!todoLists.length && (
+      {fetchTodoListsData && !!fetchTodoListsData.length && (
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto mt-8 border border-gray-300">
           <ul>
-            {todoLists.map((list, index) => {
-              
-              const deleteTodoList = () => {
-                setTodoLists([
-                  ...todoLists.slice(0, index),
-                  ...todoLists.slice(index + 1, todoLists.length)
-                ])
-              }
-
-              return (
-                <TodoListLink
-                  key={list.id}
-                  todoList={list}
-                  deleteTodoList={deleteTodoList}
-                  className={classNames({ 'border-t': !!index })}
-                />
-              )
-            })}
+            {fetchTodoListsData.map((list, index) => (
+              <TodoListLink
+                key={list.id}
+                todoList={list}
+                deleteTodoList={deleteTodoList}
+                className={classNames({ 'border-t': !!index })}
+              />
+            ))}
           </ul>
         </div>
       )}
-      {!todoLists.length && (
+      {fetchTodoListsData && !fetchTodoListsData.length && (
         <p className="mt-6 text-center text-gray-500">Add a list</p>
       )}
     </>

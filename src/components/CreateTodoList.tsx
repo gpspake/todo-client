@@ -1,26 +1,38 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
 import { format } from 'date-fns'
+import { queryCache, useMutation } from 'react-query'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList } from '../models/TodoList'
-import { TodoListsContext } from '../store/todolists'
 import { TodoListName } from './TodoListName'
+import { addTodoList } from '../utils/todo-api-client'
 
 export const CreateTodoList = () => {
-
-  const { addTodoList } = useContext(TodoListsContext)
+  
   const [newTodoList, setNewTodoList] = useState(
     { ...new TodoList(), name: format(new Date(), 'PPPP') }
   )
-  const [redirectToList, setRedirectToList] = useState(0)
   
-  const addTodo = (todo: TodoItem) => {
-    const todoList = { ...newTodoList, todos: [todo] }
-    const id = addTodoList(todoList)
-    setRedirectToList(id)
+  const [redirectToList, setRedirectToList] = useState(0)
+
+  const [addTodoListMutation] = useMutation(addTodoList, {
+    onSuccess: () => {
+      queryCache.refetchQueries(['todoLists'])
+    }
+  })
+  
+  const addTodoItem = (todoItem: TodoItem) => {
+    addTodoListMutation({ 
+      ...newTodoList, 
+      todoItems: [todoItem] 
+    }).then(
+      response => {
+        setRedirectToList(response.id)
+      }
+    )
   }
   
   const setTodoListName = (name: string) => {
@@ -45,7 +57,7 @@ export const CreateTodoList = () => {
         todoListName={newTodoList.name} 
         setTodoListName={setTodoListName} 
       />
-      <TodoInput addTodo={addTodo} />
+      <TodoInput onAddTodoItem={addTodoItem} />
     </>
   )
 }

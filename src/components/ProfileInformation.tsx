@@ -9,6 +9,7 @@ export const ProfileInformation: React.FC<{ onClose: any }> = (
       onClose()
     }
   }, [])
+  
   const clickListener = useCallback(
     (e: MouseEvent) => {
       if (!(ref.current! as any).contains(e.target)) {
@@ -17,6 +18,7 @@ export const ProfileInformation: React.FC<{ onClose: any }> = (
     },
     [ref.current],
   )
+  
   // Below is the 10 lines of code you need.
   useEffect(() => {
     // Attach the listeners on component mount.

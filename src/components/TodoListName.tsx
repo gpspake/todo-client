@@ -65,7 +65,7 @@ export const TodoListName = (props: ITodoListItemProps) => {
             value={todoListName}
             onChange={onTodoListNameChange}
             onKeyDown={handleKeyDown}
-            inputRef={(node) => {
+            inputRef={(node: HTMLTextAreaElement) => {
               if (node) {
                 node.focus()
               }

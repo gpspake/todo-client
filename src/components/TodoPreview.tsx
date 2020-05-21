@@ -15,20 +15,20 @@ export const TodoPreview = () => {
     }
   }
   
-  const [todos, setTodos] = useState<TodoItem[]>( [
-    { id: 1, name: 'Change the world', isComplete: false },
-    { id: 2, name: 'Accomplish your goals', isComplete: false },
-    { id: 3, name: 'Do something amazing', isComplete: true }
+  const [todoItems, setTodoItems] = useState<TodoItem[]>( [
+    { id: 1, name: 'Change the world', isComplete: false, todoListId: 0 },
+    { id: 2, name: 'Accomplish your goals', isComplete: false, todoListId: 0 },
+    { id: 3, name: 'Do something amazing', isComplete: true, todoListId: 0 }
   ])
 
   const addTodo = (todo: TodoItem) => {
-    setTodos([...todos, todo])
+    setTodoItems([...todoItems, todo])
   }
 
   return (
     <>
-      <TodoInput addTodo={addTodo} placeHolder="Create beautiful lists" />
-      <TodoList todos={todos} setTodos={setTodos} />
+      <TodoInput onAddTodoItem={addTodo} placeHolder="Create beautiful lists" />
+      <TodoList todoItems={todoItems} />
       <button
         onClick={loginHandler}
         type="button" 

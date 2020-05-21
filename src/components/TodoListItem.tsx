@@ -3,46 +3,77 @@ import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextareaAutosize from 'react-textarea-autosize'
 import { faSave, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons'
+import { queryCache, useMutation } from 'react-query'
 import { TodoItem } from '../models/TodoItem'
+import { updateTodoItem, deleteTodoItem } from '../utils/todo-api-client'
 
 interface ITodoListItemProps {
-  todo: TodoItem
-  setTodo:(todo: TodoItem) => void
-  deleteTodo:() => void
+  todoItem: TodoItem
   className?: string
 }
 
 export const TodoListItem = (props: ITodoListItemProps) => {
-  const { todo, className, setTodo, deleteTodo } = props
-  const { isComplete } = todo
+  
+  const { todoItem, className } = props
+  const { isComplete } = todoItem
   const [editing, setEditing] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
-  const [name, setName] = useState(todo.name)
+  const [name, setName] = useState(todoItem.name)
+
+  const [deleteTodoItemMutation] = useMutation(
+    deleteTodoItem, 
+    {
+      onSuccess: () => {
+        queryCache.refetchQueries(['todoList'])
+      }
+    }
+  )
   
-  const toggleComplete = () => {
-    setTodo({ ...todo, isComplete: !isComplete })
+  const [updateTodoItemMutation] = useMutation(
+    updateTodoItem, 
+    {
+      onSuccess: () => {
+        queryCache.refetchQueries(['todoList'])
+      }
+    }
+  )
+  
+  const onToggleIsComplete = () => {
+    updateTodoItemMutation({ 
+      ...todoItem, 
+      isComplete: !todoItem.isComplete 
+    })
   }
   
   const toggleEditing = () => {
     setEditing(!editing)
   }
 
-  const onChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+  const onTodoItemNameChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setName(event.target.value)
   }
   
-  const cancelEditing = () => {
-    setName(todo.name)
+  const cancelEditingTodoItemName = () => {
+    setName(todoItem.name)
+    toggleEditing()
+  }
+  
+  const updateTodoItemName = () => {
+    updateTodoItemMutation({ ...todoItem, name })
     toggleEditing()
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if(event.key === 'Enter'){
-      toggleEditing()
+      updateTodoItemName()
     }
     if(event.key === 'Escape'){
-      cancelEditing()
+      cancelEditingTodoItemName()
     }
+  }
+  
+  const onConfirmDelete = async () => {
+    await deleteTodoItemMutation(todoItem.id)
   }
 
   return (
@@ -59,26 +90,61 @@ export const TodoListItem = (props: ITodoListItemProps) => {
                 )}
                 checked={isComplete}
                 type="checkbox"
-                onChange={toggleComplete}
+                onChange={onToggleIsComplete}
               />
+              
               {!confirmDelete && (
-                <button
-                  type="button"
-                  className={classNames(
-                    { 'line-through text-gray-500': isComplete },
-                    { 'text-gray-600': !isComplete },
-                    'ml-4 font-light text-left hover:text-teal-500'
-                  )}
-                  onClick={toggleEditing}
-                >
-                  {name}
-                </button>
+                <>
+                  <button
+                    type="button"
+                    className={classNames(
+                      { 'line-through text-gray-500': isComplete },
+                      { 'text-gray-600': !isComplete },
+                      'ml-4 font-light text-left hover:text-teal-500'
+                    )}
+                    onClick={toggleEditing}
+                  >
+                    {name}
+                  </button>
+
+                  <div className="ml-auto inline-flex px-4">
+                    <button
+                      onClick={() => {setConfirmDelete(true)}}
+                      type="button"
+                      className="transition-all duration-200 ease-in-out text-white group-hover:text-gray-300"
+                    >
+                      <FontAwesomeIcon
+                        className="transition-all duration-200 ease-in-out hover:text-pink-700"
+                        icon={faTrash}
+                      />
+                    </button>
+                  </div>
+                </>
+              )}
+
+              {confirmDelete && (
+                <>
+                  <p className="ml-4 text-pink-700">Are you sure?</p>
+                  
+                  <div className="ml-auto inline-flex px-4">
+                    <button
+                      onClick={onConfirmDelete}
+                      type="button"
+                      className="transition-all duration-200 ease-in-out text-gray-300 hover:text-pink-700 mr-4"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={() => setConfirmDelete(false)}
+                      type="button"
+                      className="transition-all duration-200 ease-in-out text-gray-300 hover:text-gray-500"
+                    >
+                      No
+                    </button>
+                  </div>
+                </>
               )}
             </>
-          )}
-          
-          {confirmDelete && (
-            <p className="ml-4 text-pink-700">Are you sure?</p>
           )}
           
           {editing && (
@@ -87,7 +153,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
                 className="form-textarea block w-full border-0 resize-none focus:shadow-none p-0 ml-4"
                 placeholder="Enter some long form content."
                 value={name}
-                onChange={onChange}
+                onChange={onTodoItemNameChange}
                 onKeyDown={handleKeyDown}
                 inputRef={(node) => {
                   if (node) {
@@ -97,14 +163,14 @@ export const TodoListItem = (props: ITodoListItemProps) => {
               />
               <div className="ml-auto inline-flex px-4">
                 <button
-                  onClick={cancelEditing}
+                  onClick={cancelEditingTodoItemName}
                   type="button"
                   className="transition-all duration-200 ease-in-out text-gray-300 hover:text-gray-500 mr-4"
                 >
                   <FontAwesomeIcon icon={faTimes} />
                 </button>
                 <button
-                  onClick={toggleEditing}
+                  onClick={updateTodoItemName}
                   type="button"
                   className="transition-all duration-200 ease-in-out text-gray-300 hover:text-teal-500"
                 >
@@ -112,40 +178,6 @@ export const TodoListItem = (props: ITodoListItemProps) => {
                 </button>
               </div>
             </>
-          )}
-            
-          {!editing && !confirmDelete && (
-            <div className="ml-auto inline-flex px-4">
-              <button
-                onClick={() => {setConfirmDelete(true)}}
-                type="button"
-                className="transition-all duration-200 ease-in-out text-white group-hover:text-gray-300"
-              >
-                <FontAwesomeIcon 
-                  className="transition-all duration-200 ease-in-out hover:text-pink-700" 
-                  icon={faTrash} 
-                />
-              </button>
-            </div>
-          )}
-
-          {confirmDelete && (
-            <div className="ml-auto inline-flex px-4">
-              <button
-                onClick={deleteTodo}
-                type="button"
-                className="transition-all duration-200 ease-in-out text-gray-300 hover:text-pink-700 mr-4"
-              >
-                Yes
-              </button>
-              <button
-                onClick={() => setConfirmDelete(false)}
-                type="button"
-                className="transition-all duration-200 ease-in-out text-gray-300 hover:text-gray-500"
-              >
-                No
-              </button>
-            </div>
           )}
         </div>
       </div>

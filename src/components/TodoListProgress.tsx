@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
 import ReactTooltip from 'react-tooltip'
 import { TodoList } from '../models/TodoList'
@@ -10,8 +10,8 @@ interface ITodoListItemProps {
 export const TodoListProgress = (props: ITodoListItemProps) => {
   const { todoList } = props
 
-  const todoCount = todoList.todos.length
-  const completedTodoCount = todoList.todos.filter(
+  const todoCount = todoList.todoItems.length
+  const completedTodoCount = todoList.todoItems.filter(
     todo => todo.isComplete
   ).length
   const todoPercent = Math.round(completedTodoCount / todoCount * 100)
