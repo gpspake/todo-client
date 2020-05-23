@@ -31,7 +31,7 @@ export const TodoInput = (props: ITodoInputProps) => {
         <input
           className="py-3 px-4 text-gray-800 border-gray-300 border outline-none placeholder-gray-500 focus:bg-gray-100 w-full"
           type="text"
-          name="email"
+          name="todo"
           placeholder={props.placeHolder || 'Walk the dog'}
           value={name}
           onChange={onChange}
