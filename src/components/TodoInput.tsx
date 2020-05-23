@@ -15,7 +15,10 @@ export const TodoInput = (props: ITodoInputProps) => {
   }
 
   const handleKeyPress = (event: React.KeyboardEvent) => {
-    if(event.key === 'Enter') {
+    const newTodoItemInputElement = document.getElementById('new-todo-item-input')
+    const isFocused = (document.activeElement === newTodoItemInputElement)
+    
+    if(event.key === 'Enter' && isFocused) {
       onClickAdd()
     }
   }
@@ -29,6 +32,7 @@ export const TodoInput = (props: ITodoInputProps) => {
     <div className="flex items-center mx-auto justify-center md:py-0 border-gray-700 max-w-sm mt-5">
       <div className="flex flex-row rounded overflow-hidden w-full">
         <input
+          id="new-todo-item-input"
           className="py-3 px-4 text-gray-800 border-gray-300 border outline-none placeholder-gray-500 focus:bg-gray-100 w-full"
           type="text"
           name="todo"

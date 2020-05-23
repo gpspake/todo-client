@@ -21,8 +21,15 @@ export const TodoListName = (props: ITodoListItemProps) => {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
+    const newTodoItemInputElement = document.getElementById('todo-list-name-input')
+    const isFocused = (document.activeElement === newTodoItemInputElement)
+    
+    
     if(event.key === 'Enter'){
-      saveTodoListName()
+      if(isFocused) {
+        event.preventDefault()
+        saveTodoListName()
+      }
     }    
     if(event.key === 'Escape'){
       cancelEditTodoListName()
@@ -60,6 +67,7 @@ export const TodoListName = (props: ITodoListItemProps) => {
       {editingTodoListName && (
         <div className="relative m-auto">
           <TextareaAutosize
+            id="todo-list-name-input"
             className="m-auto form-textarea block border-0 font-thin resize-none text-4xl focus:shadow-none p-0 text-center max-w-sm"
             placeholder="Enter a name for this list"
             value={todoListName}
