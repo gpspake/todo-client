@@ -10,6 +10,15 @@ import { TodoList } from '../models/TodoList'
 import { TodoListName } from './TodoListName'
 import { addTodoList } from '../utils/todo-api-client'
 
+const useAddTodoListMutation = () => {
+  return useMutation(addTodoList, {
+    onSuccess: async savedTodoList => {
+      await queryCache.refetchQueries(['todoList', savedTodoList.id])
+      await queryCache.refetchQueries(['todoLists'])
+    }
+  })
+}
+
 export const CreateTodoList = () => {
   
   const [newTodoList, setNewTodoList] = useState(
@@ -18,11 +27,7 @@ export const CreateTodoList = () => {
   
   const [redirectToList, setRedirectToList] = useState(0)
 
-  const [addTodoListMutation] = useMutation(addTodoList, {
-    onSuccess: () => {
-      queryCache.refetchQueries(['todoLists'])
-    }
-  })
+  const [addTodoListMutation] = useAddTodoListMutation()
   
   const addTodoItem = (todoItem: TodoItem) => {
     addTodoListMutation({ 
