@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faCircleNotch, faList, faSpinner } from '@fortawesome/free-solid-svg-icons'
 import { queryCache, useMutation, useQuery } from 'react-query'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
@@ -65,6 +65,15 @@ export const EditTodoList = () => {
           <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
         </span>
       </Link>
+
+      {status !== 'success' && (
+        <FontAwesomeIcon 
+          icon={faCircleNotch} 
+          size="2x"
+          spin 
+          className="block mx-auto mt-8 text-teal-500"
+        />
+      )}
 
       {status === 'success' && !!todoList && (
         <>
