@@ -36,6 +36,11 @@ export const TodoInput = (props: ITodoInputProps) => {
           value={name}
           onChange={onChange}
           onKeyPress={handleKeyPress}
+          ref={(node) => {
+            if (node) {
+              node.focus()
+            }
+          }}
         />
         <button
           onClick={onClickAdd}
