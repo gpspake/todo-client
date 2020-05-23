@@ -3,7 +3,7 @@ import { Link, Redirect } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
 import { format } from 'date-fns'
-import { queryCache, useMutation } from 'react-query'
+import { useMutation } from 'react-query'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList } from '../models/TodoList'
@@ -11,12 +11,7 @@ import { TodoListName } from './TodoListName'
 import { addTodoList } from '../utils/todo-api-client'
 
 const useAddTodoListMutation = () => {
-  return useMutation(addTodoList, {
-    onSuccess: async savedTodoList => {
-      await queryCache.refetchQueries(['todoList', savedTodoList.id])
-      await queryCache.refetchQueries(['todoLists'])
-    }
-  })
+  return useMutation(addTodoList)
 }
 
 export const CreateTodoList = () => {
