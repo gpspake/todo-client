@@ -1,59 +1,42 @@
 import React from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faCircleNotch, faList, faSpinner } from '@fortawesome/free-solid-svg-icons'
-import { queryCache, useMutation, useQuery } from 'react-query'
+import { faCircle, faCircleNotch, faList } from '@fortawesome/free-solid-svg-icons'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
-import { TodoList as TodoListComponent } from './TodoList'
+import { TodoList } from './TodoList'
 import { TodoListName } from './TodoListName'
-import { addTodoItem, fetchTodoList, updateTodoList } from '../utils/todo-api-client'
+import {
+  useAddTodoItemMutation,
+  useDeleteTodoItemMutation, 
+  useFetchTodoListsQuery,
+  useUpdateTodoItemMutation,
+  useUpdateTodoListMutation
+} from '../utils/todo-hooks'
 
 export const EditTodoList = () => {
 
   const { todoListId } = useParams()
 
-  const [addTodoItemMutation] = useMutation(
-    addTodoItem,
-    {
-      onSuccess: () => {
-        queryCache.refetchQueries(['todoList', todoListId])
-      }
-    }
-  )
-  
-  const [updateTodoListMutation] = useMutation(
-    updateTodoList,
-    {
-      onSuccess: () => {
-        queryCache.refetchQueries(['todoList'])
-      }
-    }
-  )
+  const { status, data: todoList } = useFetchTodoListsQuery(todoListId)
+  const [deleteTodoItemMutation] = useDeleteTodoItemMutation()
+  const [updateTodoItemMutation] = useUpdateTodoItemMutation()
+  const [addTodoItemMutation] = useAddTodoItemMutation(todoListId)
+  const [updateTodoListMutation] = useUpdateTodoListMutation()
 
-  const { status, data: todoList } = useQuery(
-    ['todoList', todoListId],
-    () => fetchTodoList(todoListId)
-  )
-
-  const onAddTodoItem = async (todoItem: TodoItem) => {
-    try {
-      await addTodoItemMutation({
-        ...todoItem,
-        todoListId: parseInt(todoListId, 10)
-      })
-    } catch (error) {
-      // Uh oh, something went wrong
-    }
+  const addTodoItem = async (todoItem: TodoItem) => {
+    await addTodoItemMutation({
+      ...todoItem,
+      todoListId: parseInt(todoListId, 10)
+    })
   }
 
-
-  const setTodoListName = (name: string) => {
+  const setTodoListName = async (name: string) => {
     if (todoList) {
-      updateTodoListMutation({ ...todoList, name })
+      await updateTodoListMutation({ ...todoList, name })
     }
   }
-
+  
   return (
     <>
       <Link className="block flex align-items-center mt-8" to="/">
@@ -81,8 +64,12 @@ export const EditTodoList = () => {
             todoListName={todoList.name}
             setTodoListName={setTodoListName}
           />
-          <TodoInput onAddTodoItem={onAddTodoItem} />
-          <TodoListComponent todoItems={todoList.todoItems} />
+          <TodoInput addTodoItem={addTodoItem} />
+          <TodoList
+            todoItems={todoList.todoItems}
+            updateTodoItem={updateTodoItemMutation}
+            deleteTodoItem={deleteTodoItemMutation}
+          />
         </>
       )}
     </>

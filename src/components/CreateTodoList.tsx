@@ -3,16 +3,11 @@ import { Link, Redirect } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
 import { format } from 'date-fns'
-import { useMutation } from 'react-query'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList } from '../models/TodoList'
 import { TodoListName } from './TodoListName'
-import { addTodoList } from '../utils/todo-api-client'
-
-const useAddTodoListMutation = () => {
-  return useMutation(addTodoList)
-}
+import { useAddTodoListMutation } from '../utils/todo-hooks'
 
 export const CreateTodoList = () => {
   
@@ -57,7 +52,7 @@ export const CreateTodoList = () => {
         todoListName={newTodoList.name} 
         setTodoListName={setTodoListName} 
       />
-      <TodoInput onAddTodoItem={addTodoItem} />
+      <TodoInput addTodoItem={addTodoItem} />
     </>
   )
 }

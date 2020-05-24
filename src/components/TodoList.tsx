@@ -5,11 +5,13 @@ import { TodoItem } from '../models/TodoItem'
 
 interface ITodoListProps {
   todoItems: TodoItem[]
+  deleteTodoItem: (todoItemId: number) => void
+  updateTodoItem: (todoItem: TodoItem) => void
 }
 
 export const TodoList = (props: ITodoListProps) => {
   
-  const { todoItems } = props
+  const { todoItems, deleteTodoItem, updateTodoItem } = props
   
   return (
     <>
@@ -21,6 +23,8 @@ export const TodoList = (props: ITodoListProps) => {
                 key={todo.id+todo.name}
                 todoItem={todo}
                 className={classNames({ 'border-t': !!i })}
+                deleteTodoItem={deleteTodoItem}
+                updateTodoItem={updateTodoItem}
               />
             ))}
           </ul>

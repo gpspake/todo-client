@@ -5,15 +5,20 @@ import { Link } from 'react-router-dom'
 import classNames from 'classnames'
 import { useQuery } from 'react-query'
 import { TodoListLink } from './TodoListLink'
-import { deleteTodoList, fetchTodoLists } from '../utils/todo-api-client'
+import { fetchTodoLists } from '../utils/todo-api-client'
+import { useDeleteTodoListMutation } from '../utils/todo-hooks'
 
 export const TodoLists = () => {
   
+  const useFetchTodoList = () => useQuery('todoLists', fetchTodoLists)
+  
   const { 
     // status: fetchTodoListsStatus,
-    data: fetchTodoListsData, 
+    data: todoLists, 
     // error: fetchTodoListsError
-  } = useQuery('todoLists', fetchTodoLists)
+  } = useFetchTodoList()
+
+  const [deleteTodoListMutation] = useDeleteTodoListMutation()
   
   return (
     <>
@@ -27,21 +32,21 @@ export const TodoLists = () => {
         </span>
       </Link>
       
-      {fetchTodoListsData && !!fetchTodoListsData.length && (
+      {todoLists && !!todoLists.length && (
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto mt-8 border border-gray-300">
           <ul>
-            {fetchTodoListsData.map((list, index) => (
+            {todoLists.map((list, index) => (
               <TodoListLink
                 key={list.id}
                 todoList={list}
-                deleteTodoList={deleteTodoList}
+                deleteTodoList={deleteTodoListMutation}
                 className={classNames({ 'border-t': !!index })}
               />
             ))}
           </ul>
         </div>
       )}
-      {fetchTodoListsData && !fetchTodoListsData.length && (
+      {todoLists && !todoLists.length && (
         <p className="mt-6 text-center text-gray-500">Add a list</p>
       )}
     </>

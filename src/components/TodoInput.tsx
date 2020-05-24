@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TodoItem } from '../models/TodoItem'
 
 interface ITodoInputProps {
-  onAddTodoItem: (todoItem: TodoItem) => void
+  addTodoItem: (todoItem: TodoItem) => void
   placeHolder?: string
 }
 
@@ -24,7 +24,7 @@ export const TodoInput = (props: ITodoInputProps) => {
   }
   
   const onClickAdd = () => {
-    props.onAddTodoItem({ ...new TodoItem(), name })
+    props.addTodoItem({ ...new TodoItem(), name })
     setName('')
   }
   

@@ -3,46 +3,33 @@ import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextareaAutosize from 'react-textarea-autosize'
 import { faSave, faTimes, faTrash } from '@fortawesome/free-solid-svg-icons'
-import { queryCache, useMutation } from 'react-query'
 import { TodoItem } from '../models/TodoItem'
-import { updateTodoItem, deleteTodoItem } from '../utils/todo-api-client'
 
 interface ITodoListItemProps {
   todoItem: TodoItem
   className?: string
+  deleteTodoItem: (todoItemId: number) => void
+  updateTodoItem: (todoItem: TodoItem) => void
 }
 
 export const TodoListItem = (props: ITodoListItemProps) => {
   
-  const { todoItem, className } = props
+  const { todoItem, className, updateTodoItem, deleteTodoItem } = props
   const { isComplete } = todoItem
   const [editing, setEditing] = useState(false)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [name, setName] = useState(todoItem.name)
-
-  const [deleteTodoItemMutation] = useMutation(
-    deleteTodoItem, 
-    {
-      onSuccess: () => {
-        queryCache.refetchQueries(['todoList'])
-      }
-    }
-  )
   
-  const [updateTodoItemMutation] = useMutation(
-    updateTodoItem, 
-    {
-      onSuccess: () => {
-        queryCache.refetchQueries(['todoList'])
-      }
-    }
-  )
-  
-  const onToggleIsComplete = () => {
-    updateTodoItemMutation({ 
+  const toggleIsComplete = () => {
+    updateTodoItem({ 
       ...todoItem, 
       isComplete: !todoItem.isComplete 
     })
+  }
+
+  const updateTodoItemName = () => {
+    updateTodoItem({ ...todoItem, name })
+    toggleEditing()
   }
   
   const toggleEditing = () => {
@@ -57,11 +44,6 @@ export const TodoListItem = (props: ITodoListItemProps) => {
     setName(todoItem.name)
     toggleEditing()
   }
-  
-  const updateTodoItemName = () => {
-    updateTodoItemMutation({ ...todoItem, name })
-    toggleEditing()
-  }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if(event.key === 'Enter'){
@@ -73,7 +55,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
   }
   
   const onConfirmDelete = async () => {
-    await deleteTodoItemMutation(todoItem.id)
+    await deleteTodoItem(todoItem.id)
   }
 
   return (
@@ -90,7 +72,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
                 )}
                 checked={isComplete}
                 type="checkbox"
-                onChange={onToggleIsComplete}
+                onChange={toggleIsComplete}
               />
               
               {!confirmDelete && (

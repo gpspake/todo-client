@@ -3,7 +3,6 @@ import classNames from 'classnames'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
-import { queryCache, useMutation } from 'react-query'
 import { TodoList } from '../models/TodoList'
 import { TodoListProgress } from './TodoListProgress'
 
@@ -17,18 +16,11 @@ export const TodoListLink = (props: ITodoListItemProps) => {
   const { todoList, className, deleteTodoList } = props
   const [confirmDelete, setConfirmDelete] = useState(false)
   
-  const [mutate] = useMutation(deleteTodoList, {
-    onSuccess: () => {
-      queryCache.refetchQueries('todoLists')
-    }
-  })
-  
   const onDeleteTodoList = async (e: React.MouseEvent) => {
-    // Prevent the form from refreshing the page
     e.preventDefault()
 
     try {
-      await mutate(todoList.id)
+      await deleteTodoList(todoList.id)
       // TodoItem was successfully deleted
     } catch (error) {
       // Uh oh, something went wrong

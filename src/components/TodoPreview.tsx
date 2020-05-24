@@ -27,8 +27,12 @@ export const TodoPreview = () => {
 
   return (
     <>
-      <TodoInput onAddTodoItem={addTodo} placeHolder="Create beautiful lists" />
-      <TodoList todoItems={todoItems} />
+      <TodoInput addTodoItem={addTodo} placeHolder="Create beautiful lists" />
+      <TodoList 
+        todoItems={todoItems}
+        updateTodoItem={() => {}}
+        deleteTodoItem={() => {}}
+      />
       <button
         onClick={loginHandler}
         type="button" 
