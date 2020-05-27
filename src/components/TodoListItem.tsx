@@ -15,12 +15,13 @@ interface ITodoListItemProps {
 export const TodoListItem = (props: ITodoListItemProps) => {
   
   const { todoItem, className, updateTodoItem, deleteTodoItem } = props
-  const { isComplete } = todoItem
   const [editing, setEditing] = useState(false)
+  const [isComplete, setIsComplete] = useState(todoItem.isComplete)
   const [confirmDelete, setConfirmDelete] = useState(false)
   const [name, setName] = useState(todoItem.name)
   
   const toggleIsComplete = () => {
+    setIsComplete(!todoItem.isComplete)
     updateTodoItem({ 
       ...todoItem, 
       isComplete: !todoItem.isComplete 
