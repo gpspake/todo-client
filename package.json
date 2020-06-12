@@ -87,5 +87,5 @@
     "prettier-eslint": "9.0.1",
     "prettier-eslint-cli": "5.0.0"
   },
-  "proxy": "http://todoapi-cf7zl6.azurewebsites.net/"
+  "proxy": "http://localhost:8000"
 }
