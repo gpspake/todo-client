@@ -1,6 +1,7 @@
-import { queryCache, useMutation, useQuery } from 'react-query'
+import {queryCache, useMutation, useQuery} from 'react-query'
 import {
-  addTodoItem, addTodoList,
+  addTodoItem, 
+  addTodoList,
   deleteTodoItem,
   deleteTodoList,
   fetchTodoList,
@@ -35,11 +36,11 @@ export const useUpdateTodoItemMutation = () => useMutation(
   }
 )
 
-export const useAddTodoItemMutation = (_todoListId: number) => useMutation(
+export const useAddTodoItemMutation = () => useMutation(
   addTodoItem,
   {
-    onSuccess: async () => {
-      await queryCache.refetchQueries(['todoList', _todoListId])
+    onSuccess: async savedTodoItem => {
+      await queryCache.refetchQueries(['todoList', savedTodoItem.todoListId])
     }
   }
 )
@@ -53,9 +54,16 @@ export const useUpdateTodoListMutation = () => useMutation(
   }
 )
 
-export const useFetchTodoListsQuery = (_todoListId: number) => useQuery(
-  ['todoList', _todoListId],
-  () => fetchTodoList(_todoListId)
+export const useFetchTodoListQuery = (todoListId: number) => useQuery(
+  ['todoList', todoListId],
+  () => fetchTodoList(todoListId)
 )
 
-export const useAddTodoListMutation = () => useMutation(addTodoList)
+export const useAddTodoListMutation = () => useMutation(
+  addTodoList,
+  {
+    onSuccess: async savedTodoList => {
+      await queryCache.setQueryData(['todoList', savedTodoList.id], savedTodoList)
+    }
+  }
+)

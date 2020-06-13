@@ -9,32 +9,28 @@ import { TodoListName } from './TodoListName'
 import {
   useAddTodoItemMutation,
   useDeleteTodoItemMutation, 
-  useFetchTodoListsQuery,
+  useFetchTodoListQuery,
   useUpdateTodoItemMutation,
   useUpdateTodoListMutation
 } from '../utils/todo-hooks'
 
 export const EditTodoList = () => {
 
-  const { todoListId } = useParams()
+  let { todoListId } = useParams()
+  todoListId = parseInt(todoListId, 10)
 
-  const { status, data: todoList } = useFetchTodoListsQuery(todoListId)
+  const { status, data: todoList } = useFetchTodoListQuery(todoListId)
   const [deleteTodoItemMutation] = useDeleteTodoItemMutation()
   const [updateTodoItemMutation] = useUpdateTodoItemMutation()
-  const [addTodoItemMutation] = useAddTodoItemMutation(todoListId)
+  const [addTodoItemMutation] = useAddTodoItemMutation()
   const [updateTodoListMutation] = useUpdateTodoListMutation()
 
   const addTodoItem = async (todoItem: TodoItem) => {
-    await addTodoItemMutation({
-      ...todoItem,
-      todoListId: parseInt(todoListId, 10)
-    })
+    await addTodoItemMutation({ ...todoItem, todoListId })
   }
 
   const setTodoListName = async (name: string) => {
-    if (todoList) {
-      await updateTodoListMutation({ ...todoList, name })
-    }
+    await updateTodoListMutation({ ...todoList!, name })
   }
   
   return (
@@ -58,7 +54,7 @@ export const EditTodoList = () => {
         />
       )}
 
-      {status === 'success' && !!todoList && (
+      {!!todoList && (
         <>
           <TodoListName
             todoListName={todoList.name}
