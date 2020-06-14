@@ -44,7 +44,7 @@ export const TodoInput = (props: ITodoInputProps) => {
           type="text"
           name="todo"
           placeholder={props.placeHolder || 'Walk the dog'}
-          value={name}
+          value={name || ''}
           onChange={onChange}
           onKeyDown={handleKeyDown}
           ref={(node) => {
