@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import classNames from 'classnames'
 import { TodoItem } from '../models/TodoItem'
 
 interface ITodoInputProps {
@@ -8,7 +9,7 @@ interface ITodoInputProps {
 
 export const TodoInput = (props: ITodoInputProps) => {
   
-  const [name, setName] = useState()
+  const [name, setName] = useState('')
   
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value)
@@ -31,8 +32,10 @@ export const TodoInput = (props: ITodoInputProps) => {
   }
   
   const onAddTodoItem = () => {
-    props.addTodoItem({ ...new TodoItem(), name })
-    setName('')
+    if(name.length) {
+      props.addTodoItem({ ...new TodoItem(), name })
+      setName('')
+    }
   }
   
   return (
@@ -44,7 +47,7 @@ export const TodoInput = (props: ITodoInputProps) => {
           type="text"
           name="todo"
           placeholder={props.placeHolder || 'Walk the dog'}
-          value={name || ''}
+          value={name}
           onChange={onChange}
           onKeyDown={handleKeyDown}
           ref={(node) => {
@@ -56,7 +59,11 @@ export const TodoInput = (props: ITodoInputProps) => {
         <button
           onClick={onAddTodoItem}
           type="button"
-          className="py-3 px-4 bg-teal-500 text-gray-100 hover:bg-teal-600 transition-all duration-200 ease-in-out"
+          className={classNames(
+            { 'bg-gray-300 cursor-default': !name.length },
+            { 'bg-teal-500 hover:bg-teal-600': !!name.length },
+            'py-3 px-4 text-gray-100 transition-all duration-200 ease-in-out'
+          )}
         >
           Add
         </button>
