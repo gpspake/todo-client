@@ -3,20 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-import { useQuery } from 'react-query'
+
 import { TodoListLink } from './TodoListLink'
-import { fetchTodoLists } from '../utils/todo-api-client'
-import { useDeleteTodoList } from '../utils/todo-hooks'
+import { useDeleteTodoList, useFetchTodoLists } from '../utils/todo-hooks'
 
 export const TodoLists = () => {
-  
-  const useFetchTodoList = () => useQuery('todoLists', fetchTodoLists)
   
   const { 
     // status: fetchTodoListsStatus,
     data: todoLists, 
     // error: fetchTodoListsError
-  } = useFetchTodoList()
+  } = useFetchTodoLists()
 
   const [deleteTodoListMutation] = useDeleteTodoList()
   

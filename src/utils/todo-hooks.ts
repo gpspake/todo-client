@@ -1,14 +1,17 @@
 import { queryCache, useMutation, useQuery } from 'react-query'
 import {
-  addTodoItem, 
+  addTodoItem,
   addTodoList,
   deleteTodoItem,
   deleteTodoList,
-  fetchTodoList,
+  fetchTodoList, 
+  fetchTodoLists,
   updateTodoItem,
   updateTodoList
 } from './todo-api-client'
 import { TodoList } from '../models/TodoList'
+
+export const useFetchTodoLists = () => useQuery('todoLists', fetchTodoLists)
 
 export const useDeleteTodoList = () => useMutation(
   deleteTodoList,
