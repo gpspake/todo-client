@@ -24,15 +24,14 @@ export const TodoListName = (props: ITodoListItemProps) => {
     const newTodoItemInputElement = document.getElementById('todo-list-name-input')
     const isFocused = (document.activeElement === newTodoItemInputElement)
     
-    
-    if(event.key === 'Enter'){
-      if(isFocused) {
+    if(isFocused) {
+      if (event.key === 'Enter') {
         event.preventDefault()
         saveTodoListName()
       }
-    }    
-    if(event.key === 'Escape'){
-      cancelEditTodoListName()
+      if (event.key === 'Escape') {
+        cancelEditTodoListName()
+      }
     }
   }
 

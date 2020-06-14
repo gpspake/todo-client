@@ -47,11 +47,18 @@ export const TodoListItem = (props: ITodoListItemProps) => {
   }
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
-    if(event.key === 'Enter'){
-      updateTodoItemName()
-    }
-    if(event.key === 'Escape'){
-      cancelEditingTodoItemName()
+    const todoItemTextArea = document.getElementById(`todoItem-${todoItem.id}-input`)
+    const isFocused = (document.activeElement === todoItemTextArea)
+    
+    if(isFocused) {
+      if(event.key === 'Enter') {
+        event.preventDefault()
+        updateTodoItemName()
+      }
+      if(event.key === 'Escape') {
+        event.preventDefault()
+        cancelEditingTodoItemName()
+      }
     }
   }
   
@@ -60,7 +67,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
   }
 
   return (
-    <li className={className}>
+    <li className={`${className} todoItem-${todoItem.id}`}>
       <div className="relative w-100 group">
         <div className=" inset-0 flex items-center py-3">
           {!editing && (
@@ -133,6 +140,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
           {editing && (
             <>
               <TextareaAutosize
+                id={`todoItem-${todoItem.id}-input`}
                 className="form-textarea block w-full border-0 resize-none focus:shadow-none p-0 ml-4"
                 placeholder="Enter some long form content."
                 value={name}

@@ -14,16 +14,23 @@ export const TodoInput = (props: ITodoInputProps) => {
     setName(event.target.value)
   }
 
-  const handleKeyPress = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     const newTodoItemInputElement = document.getElementById('new-todo-item-input')
     const isFocused = (document.activeElement === newTodoItemInputElement)
     
-    if(event.key === 'Enter' && isFocused) {
-      onClickAdd()
+    if(isFocused) {
+      if(event.key === 'Enter') {
+        event.preventDefault()
+        onAddTodoItem()
+      }
+      if(event.key === 'Escape') {
+        event.preventDefault()
+        setName('')
+      }
     }
   }
   
-  const onClickAdd = () => {
+  const onAddTodoItem = () => {
     props.addTodoItem({ ...new TodoItem(), name })
     setName('')
   }
@@ -39,7 +46,7 @@ export const TodoInput = (props: ITodoInputProps) => {
           placeholder={props.placeHolder || 'Walk the dog'}
           value={name}
           onChange={onChange}
-          onKeyPress={handleKeyPress}
+          onKeyDown={handleKeyDown}
           ref={(node) => {
             if (node) {
               node.focus()
@@ -47,7 +54,7 @@ export const TodoInput = (props: ITodoInputProps) => {
           }}
         />
         <button
-          onClick={onClickAdd}
+          onClick={onAddTodoItem}
           type="button"
           className="py-3 px-4 bg-teal-500 text-gray-100 hover:bg-teal-600 transition-all duration-200 ease-in-out"
         >
