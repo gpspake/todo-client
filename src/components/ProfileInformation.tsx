@@ -8,7 +8,7 @@ export const ProfileInformation: React.FC<{ onClose: any }> = (
     if (e.key === 'Escape') {
       onClose()
     }
-  }, [])
+  }, [onClose])
   
   const clickListener = useCallback(
     (e: MouseEvent) => {
@@ -16,10 +16,9 @@ export const ProfileInformation: React.FC<{ onClose: any }> = (
         onClose?.() // using optional chaining here, change to onClose && onClose(), if required
       }
     },
-    [ref.current],
+    [onClose]
   )
   
-  // Below is the 10 lines of code you need.
   useEffect(() => {
     // Attach the listeners on component mount.
     document.addEventListener('click', clickListener)
@@ -29,7 +28,7 @@ export const ProfileInformation: React.FC<{ onClose: any }> = (
       document.removeEventListener('click', clickListener)
       document.removeEventListener('keyup', escapeListener)
     }
-  }, [])
+  }, [clickListener, escapeListener])
   
   return <div ref={ref}>{children}</div>
 }
