@@ -1,4 +1,4 @@
-import {queryCache, useMutation, useQuery} from 'react-query'
+import { queryCache, useMutation, useQuery } from 'react-query'
 import {
   addTodoItem, 
   addTodoList,
@@ -8,8 +8,9 @@ import {
   updateTodoItem,
   updateTodoList
 } from './todo-api-client'
+import { TodoList } from '../models/TodoList'
 
-export const useDeleteTodoListMutation = () => useMutation(
+export const useDeleteTodoList = () => useMutation(
   deleteTodoList,
   {
     onSuccess: async () => {
@@ -18,7 +19,7 @@ export const useDeleteTodoListMutation = () => useMutation(
   }
 )
 
-export const useDeleteTodoItemMutation = () => useMutation(
+export const useDeleteTodoItem = () => useMutation(
   deleteTodoItem,
   {
     onSuccess: async () => {
@@ -27,7 +28,7 @@ export const useDeleteTodoItemMutation = () => useMutation(
   }
 )
 
-export const useUpdateTodoItemMutation = () => useMutation(
+export const useUpdateTodoItem = () => useMutation(
   updateTodoItem,
   {
     onSuccess: async () => {
@@ -36,16 +37,19 @@ export const useUpdateTodoItemMutation = () => useMutation(
   }
 )
 
-export const useAddTodoItemMutation = () => useMutation(
+export const useAddTodoItem = (todoList: TodoList) => useMutation(
   addTodoItem,
   {
-    onSuccess: async savedTodoItem => {
-      await queryCache.refetchQueries(['todoList', savedTodoItem.todoListId])
+    onSuccess: savedTodoItem => {
+      const todoItems = [...todoList.todoItems, savedTodoItem]
+      queryCache.setQueryData(
+        ['todoList', savedTodoItem.todoListId], 
+        { ...todoList, todoItems })
     }
   }
 )
 
-export const useUpdateTodoListMutation = () => useMutation(
+export const useUpdateTodoList = () => useMutation(
   updateTodoList,
   {
     onSuccess: async () => {
@@ -54,12 +58,12 @@ export const useUpdateTodoListMutation = () => useMutation(
   }
 )
 
-export const useFetchTodoListQuery = (todoListId: number) => useQuery(
+export const useFetchTodoList = (todoListId: number) => useQuery(
   ['todoList', todoListId],
   () => fetchTodoList(todoListId)
 )
 
-export const useAddTodoListMutation = () => useMutation(
+export const useAddTodoList = () => useMutation(
   addTodoList,
   {
     onSuccess: async savedTodoList => {

@@ -7,11 +7,11 @@ import { TodoInput } from './TodoInput'
 import { TodoList } from './TodoList'
 import { TodoListName } from './TodoListName'
 import {
-  useAddTodoItemMutation,
-  useDeleteTodoItemMutation, 
-  useFetchTodoListQuery,
-  useUpdateTodoItemMutation,
-  useUpdateTodoListMutation
+  useAddTodoItem,
+  useDeleteTodoItem, 
+  useFetchTodoList,
+  useUpdateTodoItem,
+  useUpdateTodoList
 } from '../utils/todo-hooks'
 
 export const EditTodoList = () => {
@@ -19,11 +19,11 @@ export const EditTodoList = () => {
   let { todoListId } = useParams()
   todoListId = parseInt(todoListId, 10)
 
-  const { status, data: todoList } = useFetchTodoListQuery(todoListId)
-  const [deleteTodoItemMutation] = useDeleteTodoItemMutation()
-  const [updateTodoItemMutation] = useUpdateTodoItemMutation()
-  const [addTodoItemMutation] = useAddTodoItemMutation()
-  const [updateTodoListMutation] = useUpdateTodoListMutation()
+  const { status, data: todoList } = useFetchTodoList(todoListId)
+  const [deleteTodoItemMutation] = useDeleteTodoItem()
+  const [updateTodoItemMutation] = useUpdateTodoItem()
+  const [addTodoItemMutation] = useAddTodoItem(todoList!)
+  const [updateTodoListMutation] = useUpdateTodoList()
 
   const addTodoItem = async (todoItem: TodoItem) => {
     await addTodoItemMutation({ ...todoItem, todoListId })

@@ -7,7 +7,7 @@ import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList } from '../models/TodoList'
 import { TodoListName } from './TodoListName'
-import { useAddTodoListMutation } from '../utils/todo-hooks'
+import { useAddTodoList } from '../utils/todo-hooks'
 
 export const CreateTodoList = () => {
   
@@ -17,7 +17,7 @@ export const CreateTodoList = () => {
   
   const [redirectToList, setRedirectToList] = useState(0)
 
-  const [addTodoListMutation] = useAddTodoListMutation()
+  const [addTodoListMutation] = useAddTodoList()
   
   const addTodoItem = (todoItem: TodoItem) => {
     addTodoListMutation({ 

@@ -6,7 +6,7 @@ import classNames from 'classnames'
 import { useQuery } from 'react-query'
 import { TodoListLink } from './TodoListLink'
 import { fetchTodoLists } from '../utils/todo-api-client'
-import { useDeleteTodoListMutation } from '../utils/todo-hooks'
+import { useDeleteTodoList } from '../utils/todo-hooks'
 
 export const TodoLists = () => {
   
@@ -18,7 +18,7 @@ export const TodoLists = () => {
     // error: fetchTodoListsError
   } = useFetchTodoList()
 
-  const [deleteTodoListMutation] = useDeleteTodoListMutation()
+  const [deleteTodoListMutation] = useDeleteTodoList()
   
   return (
     <>
