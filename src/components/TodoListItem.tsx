@@ -101,7 +101,7 @@ export const TodoListItem = (props: ITodoListItemProps) => {
                     <button
                       onClick={() => {setConfirmDelete(true)}}
                       type="button"
-                      className="transition-all duration-200 ease-in-out text-white group-hover:text-gray-300"
+                      className="transition-all duration-200 ease-in-out text-white group-hover:text-gray-400"
                     >
                       <FontAwesomeIcon
                         className="transition-all duration-200 ease-in-out hover:text-pink-700"

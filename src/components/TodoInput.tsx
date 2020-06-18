@@ -60,7 +60,7 @@ export const TodoInput = (props: ITodoInputProps) => {
           onClick={onAddTodoItem}
           type="button"
           className={classNames(
-            { 'bg-gray-300 cursor-default': !name.length },
+            { 'bg-gray-400 cursor-default': !name.length },
             { 'bg-teal-500 hover:bg-teal-600': !!name.length },
             'py-3 px-4 text-gray-100 transition-all duration-200 ease-in-out'
           )}
