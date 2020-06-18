@@ -3,9 +3,9 @@ import { Router } from 'react-router-dom'
 import { useAuth0 } from './utils/hooks'
 import { Main } from './components/Main'
 import { Nav } from './components/Nav'
-import { TodoPreview } from './components/TodoPreview'
 import history from './utils/history'
 import './tailwind.generated.css'
+import { PreviewTodoList } from './components/PreviewTodoList'
 
 function App() {
   const { isAuthenticated, loading } = useAuth0()
@@ -17,12 +17,8 @@ function App() {
   return (
     <Router history={history}>
       <Nav />
-      {!loading && (
-        <>
-          {isAuthenticated && <Main />}
-          {!isAuthenticated && <TodoPreview />}
-        </>
-      )}
+      {!loading && isAuthenticated && <Main />}
+      {isAuthenticated !== undefined && !isAuthenticated && <PreviewTodoList />}
     </Router>
   )
 }
