@@ -15,8 +15,8 @@ export const TodoLists = () => {
     // error: fetchTodoListsError
   } = useFetchTodoLists()
 
-  const [deleteTodoListMutation] = useDeleteTodoList()
-  
+  const  { mutateAsync: deleteTodoListMutation} = useDeleteTodoList()
+
   return (
     <>
       <Link className="block flex align-items-center mt-8 " to="/todo/new">

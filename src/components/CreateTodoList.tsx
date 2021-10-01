@@ -17,10 +17,10 @@ export const CreateTodoList = () => {
   
   const [redirectToList, setRedirectToList] = useState(0)
 
-  const [addTodoListMutation] = useAddTodoList()
+  const { mutateAsync, status, data, error } = useAddTodoList()
   
   const addTodoItem = (todoItem: TodoItem) => {
-    addTodoListMutation({ 
+    mutateAsync({
       ...newTodoList, 
       todoItems: [todoItem] 
     }).then(
