@@ -13,6 +13,6 @@ module.exports = {
     visibility: ['responsive', 'hover', 'group-hover', 'focus'],
   },
   plugins: [
-    require('@tailwindcss/custom-forms'),
+    require('@tailwindcss/forms'),
   ],
 }
