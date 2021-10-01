@@ -19,18 +19,17 @@
     "@types/react": "^16.9.0",
     "@types/react-circular-progressbar": "^1.1.0",
     "@types/react-dom": "^16.9.0",
-    "@types/react-query": "^1.1.2",
     "@types/react-router-dom": "^5.1.5",
     "@types/react-textarea-autosize": "^4.3.5",
     "@types/react-tooltip": "^4.2.4",
     "axios": "^0.21.1",
     "classnames": "^2.2.6",
-    "date-fns": "^2.13.0",
+    "date-fns": "^2.24.0",
     "history": "^4.10.1",
     "react": "^16.13.1",
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.13.1",
-    "react-query": "^1.5.1",
+    "react-query": "^3.24.5",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-textarea-autosize": "^7.1.2",
@@ -87,5 +86,5 @@
     "prettier-eslint": "9.0.1",
     "prettier-eslint-cli": "5.0.0"
   },
-  "proxy": "http://localhost:8000"
+  "proxy": "http://localhost:8009"
 }
