@@ -62,11 +62,5 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {
-    "babel-eslint": "10.1.0",
-    "prettier": "2.0.5",
-    "prettier-eslint": "9.0.1",
-    "prettier-eslint-cli": "5.0.0"
-  },
   "proxy": "http://localhost:8000"
 }
