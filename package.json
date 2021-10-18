@@ -24,7 +24,6 @@
     "classnames": "^2.3.1",
     "date-fns": "^2.25.0",
     "eslint": "^7.11.0",
-    "eslint-config-prettier": "^8.3.0",
     "history": "^5.0.1",
     "react": "^17.0.2",
     "react-circular-progressbar": "^2.0.4",
@@ -44,13 +43,13 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "lint": "eslint --ext .js,.jsx,.ts,.tsx src --color",
-    "format": "prettier --write src/**/*.{ts,tsx,scss,css,json}",
-    "isready": "npm run format && npm run lint && npm run build"
+    "eject": "react-scripts eject"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
   "browserslist": {
     "production": [
