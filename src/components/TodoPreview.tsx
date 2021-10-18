@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList } from './TodoList'
-import { useAuth0 } from '../utils/hooks'
+import { useAuth0 } from '../utils/react-auth0-wrapper';
 
 export const TodoPreview = () => {
 

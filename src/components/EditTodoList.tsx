@@ -8,22 +8,26 @@ import { TodoList } from './TodoList'
 import { TodoListName } from './TodoListName'
 import {
   useAddTodoItem,
-  useDeleteTodoItem, 
+  useDeleteTodoItem,
   useFetchTodoList,
   useUpdateTodoItem,
   useUpdateTodoList
 } from '../utils/todo-hooks'
 
 export const EditTodoList = () => {
-  
-  let { todoListId } = useParams()
-  todoListId = parseInt(todoListId, 10)
+
+  type TodoListParams = {
+    todoListIdParam: string;
+  };
+
+  const { todoListIdParam } = useParams<TodoListParams>()
+  const todoListId = parseInt(todoListIdParam, 10)
 
   const { status, data: todoList } = useFetchTodoList(todoListId)
-  const [deleteTodoItemMutation] = useDeleteTodoItem()
-  const [updateTodoItemMutation] = useUpdateTodoItem()
-  const [addTodoItemMutation] = useAddTodoItem(todoList!)
-  const [updateTodoListMutation] = useUpdateTodoList()
+  const  { mutateAsync: deleteTodoItemMutation} = useDeleteTodoItem()
+  const  { mutateAsync: updateTodoItemMutation} = useUpdateTodoItem()
+  const  { mutateAsync: addTodoItemMutation} = useAddTodoItem(todoList!)
+  const  { mutateAsync: updateTodoListMutation} = useUpdateTodoList()
 
   const addTodoItem = async (todoItem: TodoItem) => {
     await addTodoItemMutation({ ...todoItem, todoListId })
@@ -32,7 +36,7 @@ export const EditTodoList = () => {
   const setTodoListName = async (name: string) => {
     await updateTodoListMutation({ ...todoList!, name })
   }
-  
+
   return (
     <>
       <Link className="block flex align-items-center mt-8" to="/">
@@ -46,10 +50,10 @@ export const EditTodoList = () => {
       </Link>
 
       {status !== 'success' && (
-        <FontAwesomeIcon 
-          icon={faCircleNotch} 
+        <FontAwesomeIcon
+          icon={faCircleNotch}
           size="2x"
-          spin 
+          spin
           className="block mx-auto mt-8 text-teal-500"
         />
       )}

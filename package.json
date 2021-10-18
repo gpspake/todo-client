@@ -20,7 +20,7 @@
     "@types/react-dom": "^17.0.9",
     "@types/react-router-dom": "^5.3.1",
     "@types/react-textarea-autosize": "^4.3.6",
-    "axios": "^0.23.0",
+    "axios": "^0.21.4",
     "classnames": "^2.3.1",
     "date-fns": "^2.25.0",
     "eslint": "^7.11.0",

@@ -9,6 +9,7 @@ export const fetchTodoLists = async (): Promise<TodoList[]> => {
     )
     return data
   } catch (error) {
+    // @ts-ignore
     return error
   }
 }
@@ -20,6 +21,7 @@ export const fetchTodoList = async (todoListId: number): Promise<TodoList> => {
     )
     return data
   } catch (error) {
+    // @ts-ignore
     return error
   }
 }
@@ -32,6 +34,7 @@ export const addTodoItem = async (todoItem: TodoItem): Promise<TodoItem> => {
     )
     return data
   } catch (addTodoListError) {
+    // @ts-ignore
     return addTodoListError
   }
 }
@@ -55,6 +58,7 @@ export const deleteTodoItem = async (todoItemId: number): Promise<TodoList> => {
     )
     return data
   } catch (deleteTodoListError) {
+    // @ts-ignore
     return deleteTodoListError
   }
 }
@@ -67,6 +71,7 @@ export const addTodoList = async (todoList: TodoList): Promise<TodoList> => {
     )
     return data
   } catch (addTodoListError) {
+    // @ts-ignore
     return addTodoListError
   }
 }
@@ -79,6 +84,7 @@ export const updateTodoList = async (todoList: TodoList): Promise<TodoList> => {
     )
     return data
   } catch (deleteTodoListError) {
+    // @ts-ignore
     return deleteTodoListError
   }
 }
@@ -90,6 +96,7 @@ export const deleteTodoList = async (todoListId: number): Promise<TodoList> => {
     )
     return data
   } catch (deleteTodoListError) {
+    // @ts-ignore
     return deleteTodoListError
   }
 }

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { ProfileInformation } from './ProfileInformation'
-import { useAuth0 } from '../utils/hooks'
+import { useAuth0 } from '../utils/react-auth0-wrapper';
 
 export const ProfileIcon: React.FC = ({ children }) => {
   const [open, setOpen] = useState(false)
