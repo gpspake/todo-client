@@ -9,9 +9,9 @@ import {TodoListLink} from "./TodoListLink";
 export const TodoLists = () => {
 
   const {
-    status: fetchTodoListsStatus,
+    // status: fetchTodoListsStatus,
     data: todoLists,
-    error: fetchTodoListsError
+    // error: fetchTodoListsError
   } = useFetchTodoLists()
 
   const  { mutateAsync: deleteTodoListMutation} = useDeleteTodoList()

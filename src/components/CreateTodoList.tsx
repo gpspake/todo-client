@@ -17,7 +17,7 @@ export const CreateTodoList = () => {
 
   let history = useHistory();
 
-  const { mutateAsync, status, data, error } = useAddTodoList()
+  const { mutateAsync, /* status, data, error */ } = useAddTodoList()
 
   const addTodoItem = (todoItem: TodoItem) => {
     mutateAsync({
