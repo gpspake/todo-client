@@ -33,7 +33,7 @@
     "react-dom": "^16.13.1",
     "react-query": "^1.5.1",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.1",
+    "react-scripts": "4.0.3",
     "react-textarea-autosize": "^7.1.2",
     "react-tooltip": "^4.2.6",
     "tailwindcss": "^2.2.16",
