@@ -15,29 +15,35 @@ import { queryClient } from './query-client';
 
 export const useFetchTodoLists = () => useQuery('todoLists', fetchTodoLists)
 
+
+export const useAddTodoList = () => useMutation(
+  addTodoList,
+  {
+    onSuccess: async savedTodoList => {
+      await queryClient.setQueryData(['todoList', savedTodoList.id], savedTodoList)
+    }
+  }
+)
+
+export const useFetchTodoList = (todoListId: number) => useQuery(
+  ['todoList', todoListId],
+  () => fetchTodoList(todoListId)
+)
+
+export const useUpdateTodoList = () => useMutation(
+  updateTodoList,
+  {
+    onSuccess: async () => {
+      await queryClient.refetchQueries(['todoList'])
+    }
+  }
+)
+
 export const useDeleteTodoList = () => useMutation(
   deleteTodoList,
   {
     onSuccess: async () => {
       await queryClient.refetchQueries('todoLists')
-    }
-  }
-)
-
-export const useDeleteTodoItem = () => useMutation(
-  deleteTodoItem,
-  {
-    onSuccess: async () => {
-      await queryClient.refetchQueries(['todoList'])
-    }
-  }
-)
-
-export const useUpdateTodoItem = () => useMutation(
-  updateTodoItem,
-  {
-    onSuccess: async () => {
-      await queryClient.refetchQueries(['todoList'])
     }
   }
 )
@@ -54,8 +60,8 @@ export const useAddTodoItem = (todoList: TodoList) => useMutation(
   }
 )
 
-export const useUpdateTodoList = () => useMutation(
-  updateTodoList,
+export const useUpdateTodoItem = () => useMutation(
+  updateTodoItem,
   {
     onSuccess: async () => {
       await queryClient.refetchQueries(['todoList'])
@@ -63,16 +69,11 @@ export const useUpdateTodoList = () => useMutation(
   }
 )
 
-export const useFetchTodoList = (todoListId: number) => useQuery(
-  ['todoList', todoListId],
-  () => fetchTodoList(todoListId)
-)
-
-export const useAddTodoList = () => useMutation(
-  addTodoList,
+export const useDeleteTodoItem = () => useMutation(
+  deleteTodoItem,
   {
-    onSuccess: async savedTodoList => {
-      await queryClient.setQueryData(['todoList', savedTodoList.id], savedTodoList)
+    onSuccess: async () => {
+      await queryClient.refetchQueries(['todoList'])
     }
   }
 )
