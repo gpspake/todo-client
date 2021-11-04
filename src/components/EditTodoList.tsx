@@ -17,17 +17,17 @@ import {
 export const EditTodoList = () => {
 
   type TodoListParams = {
-    todoListIdParam: string;
+    todoListId: string;
   };
 
-  const { todoListIdParam } = useParams<TodoListParams>()
-  const todoListId = parseInt(todoListIdParam, 10)
+  const { todoListId: todoListIdParam } = useParams<TodoListParams>()
+  const todoListId = +todoListIdParam
 
   const { status, data: todoList } = useFetchTodoList(todoListId)
-  const  { mutateAsync: deleteTodoItemMutation} = useDeleteTodoItem()
-  const  { mutateAsync: updateTodoItemMutation} = useUpdateTodoItem()
-  const  { mutateAsync: addTodoItemMutation} = useAddTodoItem(todoList!)
-  const  { mutateAsync: updateTodoListMutation} = useUpdateTodoList()
+  const { mutateAsync: deleteTodoItemMutation} = useDeleteTodoItem()
+  const { mutateAsync: updateTodoItemMutation} = useUpdateTodoItem()
+  const { mutateAsync: addTodoItemMutation} = useAddTodoItem(todoList!)
+  const { mutateAsync: updateTodoListMutation} = useUpdateTodoList()
 
   const addTodoItem = async (todoItem: TodoItem) => {
     await addTodoItemMutation({ ...todoItem, todoListId })
