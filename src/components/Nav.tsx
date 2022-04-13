@@ -2,7 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { ProfileIcon } from './ProfileIcon'
 import Login from './Login'
-import { useAuth0 } from '../utils/react-auth0-wrapper';
+import { useAuth0 } from '@auth0/auth0-react';
 
 export const Nav = () => {
   const { isAuthenticated, logout, user } = useAuth0()
