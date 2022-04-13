@@ -11,7 +11,7 @@ interface Auth0ProviderProps extends Auth0ClientOptions {
 export interface ContextValue {
   isAuthenticated?: boolean;
   user?: any;
-  loading?: boolean;
+  isLoading?: boolean;
   popupOpen?: boolean;
   loginWithPopup: (params: any) => void;
   handleRedirectCallback?: () => void;
@@ -24,15 +24,15 @@ export interface ContextValue {
 
 const DEFAULT_REDIRECT_CALLBACK = () =>
   window.history.replaceState(
-    {}, 
-    document.title, 
+    {},
+    document.title,
     window.location.pathname
   )
 
 export const Auth0Context = React.createContext<ContextValue>({
   isAuthenticated: false,
   user: {},
-  loading: true,
+  isLoading: true,
   popupOpen: false,
   loginWithPopup: (params: any) => {},
   handleRedirectCallback: () => {},
@@ -48,8 +48,9 @@ const setAxiosTokenInterceptor = async (accessToken: string): Promise<void> => {
   axios.interceptors.request.use(async config => {
     const requestConfig = config
     if (accessToken) {
+      // @ts-ignore
       requestConfig.headers.common.Authorization = `Bearer ${accessToken}`
-    } 
+    }
     return requestConfig
   })
 }
@@ -63,12 +64,13 @@ export const Auth0Provider = (
   const [isAuthenticated, setIsAuthenticated] = useState()
   const [user, setUser] = useState()
   const [auth0Client, setAuth0] = useState()
-  const [loading, setLoading] = useState(true)
+  const [isLoading, setIsLoading] = useState(true)
   const [popupOpen, setPopupOpen] = useState(false)
-  
+
   useEffect(() => {
     const initAuth0 = async () => {
       const auth0FromHook = await createAuth0Client(initOptions)
+      // @ts-ignore
       setAuth0(auth0FromHook)
 
       if (window.location.search.includes('code=')) {
@@ -78,22 +80,24 @@ export const Auth0Provider = (
 
       auth0FromHook.isAuthenticated().then(
         async authenticated => {
+          // @ts-ignore
           setIsAuthenticated(authenticated)
           if (authenticated) {
             auth0FromHook.getUser().then(
               auth0User => {
+                // @ts-ignore
                 setUser(auth0User)
               }
             )
             const token = await auth0FromHook.getTokenSilently()
             setAxiosTokenInterceptor(token).then(
-              () => {setLoading(false)}
+              () => {setIsLoading(false)}
             )
           }
         }
       )
 
-      
+
     }
     initAuth0().catch()
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
@@ -101,6 +105,7 @@ export const Auth0Provider = (
   const loginWithPopup = async () => {
     setPopupOpen(true)
     try {
+      // @ts-ignore
       await auth0Client.loginWithPopup()
     } catch (error) {
       console.error(error)
@@ -108,16 +113,21 @@ export const Auth0Provider = (
       setPopupOpen(false)
     }
 
+    // @ts-ignore
     const auth0User = await auth0Client.getUser()
     setUser(auth0User)
+    // @ts-ignore
     setIsAuthenticated(true)
   }
 
   const handleRedirectCallback = async () => {
-    setLoading(true)
+    setIsLoading(true)
+    // @ts-ignore
     await auth0Client.handleRedirectCallback()
+    // @ts-ignore
     const auth0User = await auth0Client.getUser()
-    setLoading(false)
+    setIsLoading(false)
+    // @ts-ignore
     setIsAuthenticated(true)
     setUser(auth0User)
   }
@@ -127,14 +137,19 @@ export const Auth0Provider = (
       value={{
         isAuthenticated,
         user,
-        loading,
+        isLoading,
         popupOpen,
         loginWithPopup,
         handleRedirectCallback,
+        // @ts-ignore
         getIdTokenClaims: (...p: any) => auth0Client.getIdTokenClaims(...p),
+        // @ts-ignore
         loginWithRedirect: (...p: any) => auth0Client.loginWithRedirect(...p),
+        // @ts-ignore
         getTokenSilently: (...p: any) => auth0Client.getTokenSilently(...p),
+        // @ts-ignore
         getTokenWithPopup: (...p: any) => auth0Client.getTokensWithPopup(...p),
+        // @ts-ignore
         logout: (...p: any) => auth0Client.logout(...p)
       }}
     >

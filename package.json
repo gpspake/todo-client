@@ -1,63 +1,40 @@
 {
-  "name": "todo-client",
-  "version": "0.1.0",
+  "name": "todolu-client",
   "private": true,
-  "dependencies": {
-    "@auth0/auth0-spa-js": "^1.8.1",
-    "@fortawesome/fontawesome-svg-core": "^1.2.28",
-    "@fortawesome/free-regular-svg-icons": "^5.13.0",
-    "@fortawesome/free-solid-svg-icons": "^5.13.0",
-    "@fortawesome/react-fontawesome": "^0.1.9",
-    "@tailwindcss/forms": "^0.3.4",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.3.2",
-    "@testing-library/user-event": "^7.1.2",
-    "@types/history": "^4.7.5",
-    "@types/jest": "^24.0.0",
-    "@types/node": "^12.0.0",
-    "@types/react": "^16.9.0",
-    "@types/react-dom": "^16.9.0",
-    "@types/react-router-dom": "^5.1.5",
-    "@types/react-textarea-autosize": "^4.3.5",
-    "axios": "^0.21.1",
-    "classnames": "^2.2.6",
-    "date-fns": "^2.24.0",
-    "history": "^4.10.1",
-    "react": "^16.13.1",
-    "react-circular-progressbar": "^2.0.3",
-    "react-dom": "^16.13.1",
-    "react-query": "^3.24.5",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "^4.0.3",
-    "react-textarea-autosize": "^7.1.2",
-    "react-tooltip": "^4.2.6",
-    "tailwindcss": "^2.2.16",
-    "typescript": "^4.4.3"
-  },
+  "version": "1.0.0",
   "scripts": {
-    "build:tailwind": "tailwindcss build src/tailwind.css -o src/tailwind.generated.css",
-    "prestart": "npm run build:tailwind",
-    "prebuild": "npm run build:tailwind",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject",
-    "isready": "npm run format && npm run lint && npm run build"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "dependencies": {
+    "@auth0/auth0-spa-js": "^1.21.0",
+    "@fortawesome/fontawesome-svg-core": "^6.1.1",
+    "@fortawesome/free-regular-svg-icons": "^6.1.1",
+    "@fortawesome/free-solid-svg-icons": "^6.1.1",
+    "@fortawesome/react-fontawesome": "^0.1.18",
+    "@tailwindcss/forms": "^0.5.0",
+    "axios": "^0.26.1",
+    "classnames": "^2.3.1",
+    "date-fns": "^2.28.0",
+    "dotenv": "^16.0.0",
+    "history": "^5.3.0",
+    "react": "^17.0.2",
+    "react-circular-progressbar": "^2.0.4",
+    "react-dom": "^17.0.2",
+    "react-query": "^3.34.19",
+    "react-router-dom": "^6.3.0",
+    "react-textarea-autosize": "^8.3.3",
+    "react-tooltip": "^4.2.21"
   },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "proxy": "http://localhost:8009"
+  "devDependencies": {
+    "@types/react": "^17.0.33",
+    "@types/react-dom": "^17.0.10",
+    "@vitejs/plugin-react": "^1.0.7",
+    "autoprefixer": "^10.4.4",
+    "postcss": "^8.4.12",
+    "tailwindcss": "^3.0.24",
+    "typescript": "^4.5.4",
+    "vite": "^2.9.0"
+  }
 }

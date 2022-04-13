@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link, Redirect } from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
 import { format } from 'date-fns'
@@ -10,34 +10,32 @@ import { TodoListName } from './TodoListName'
 import { useAddTodoList } from '../utils/todo-hooks'
 
 export const CreateTodoList = () => {
-  
+
   const [newTodoList, setNewTodoList] = useState(
     { ...new TodoList(), name: format(new Date(), 'PPPP') }
   )
-  
-  const [redirectToList, setRedirectToList] = useState(0)
 
-  const { mutateAsync, status, data, error } = useAddTodoList()
-  
+  let navigate = useNavigate();
+
+  const { mutateAsync, /* status, data, error */ } = useAddTodoList()
+
   const addTodoItem = (todoItem: TodoItem) => {
     mutateAsync({
-      ...newTodoList, 
-      todoItems: [todoItem] 
+      ...newTodoList,
+      todoItems: [todoItem]
     }).then(
       response => {
-        setRedirectToList(response.id)
+        navigate(`/todo/${response.id}`);
       }
     )
   }
-  
+
   const setTodoListName = (name: string) => {
     setNewTodoList({ ...newTodoList, name })
   }
-  
+
   return (
     <>
-      {!!redirectToList && <Redirect to={`/todo/${redirectToList}`} />}
-      
       <Link className="block flex align-items-center mt-8" to="/">
         <span className="fa-layers fa-fw fa-3x block m-auto group">
           <FontAwesomeIcon
@@ -47,10 +45,10 @@ export const CreateTodoList = () => {
           <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
         </span>
       </Link>
-      
-      <TodoListName 
-        todoListName={newTodoList.name} 
-        setTodoListName={setTodoListName} 
+
+      <TodoListName
+        todoListName={newTodoList.name}
+        setTodoListName={setTodoListName}
       />
       <TodoInput addTodoItem={addTodoItem} />
     </>

@@ -8,7 +8,7 @@ import { TodoList } from './TodoList'
 import { TodoListName } from './TodoListName'
 import {
   useAddTodoItem,
-  useDeleteTodoItem, 
+  useDeleteTodoItem,
   useFetchTodoList,
   useUpdateTodoItem,
   useUpdateTodoList
@@ -17,21 +17,17 @@ import {
 export const EditTodoList = () => {
 
   type TodoListParams = {
-    todoListIdParam: string;
+    todoListId: string;
   };
 
-  const { todoListIdParam } = useParams<TodoListParams>()
-  const todoListId = parseInt(todoListIdParam, 10)
+  const { todoListId: todoListIdParam } = useParams<TodoListParams>()
+  const todoListId = +todoListIdParam
 
   const { status, data: todoList } = useFetchTodoList(todoListId)
-  // const [deleteTodoItemMutation] = useDeleteTodoItem()
-  const  { mutateAsync: deleteTodoItemMutation} = useDeleteTodoItem()
-  // const [updateTodoItemMutation] = useUpdateTodoItem()
-  const  { mutateAsync: updateTodoItemMutation} = useUpdateTodoItem()
-  // const [addTodoItemMutation] = useAddTodoItem(todoList!)
-  const  { mutateAsync: addTodoItemMutation} = useAddTodoItem(todoList!)
-  // const [updateTodoListMutation] = useUpdateTodoList()
-  const  { mutateAsync: updateTodoListMutation} = useUpdateTodoList()
+  const { mutateAsync: deleteTodoItemMutation} = useDeleteTodoItem()
+  const { mutateAsync: updateTodoItemMutation} = useUpdateTodoItem()
+  const { mutateAsync: addTodoItemMutation} = useAddTodoItem(todoList!)
+  const { mutateAsync: updateTodoListMutation} = useUpdateTodoList()
 
   const addTodoItem = async (todoItem: TodoItem) => {
     await addTodoItemMutation({ ...todoItem, todoListId })
@@ -40,7 +36,7 @@ export const EditTodoList = () => {
   const setTodoListName = async (name: string) => {
     await updateTodoListMutation({ ...todoList!, name })
   }
-  
+
   return (
     <>
       <Link className="block flex align-items-center mt-8" to="/">
@@ -54,10 +50,10 @@ export const EditTodoList = () => {
       </Link>
 
       {status !== 'success' && (
-        <FontAwesomeIcon 
-          icon={faCircleNotch} 
+        <FontAwesomeIcon
+          icon={faCircleNotch}
           size="2x"
-          spin 
+          spin
           className="block mx-auto mt-8 text-teal-500"
         />
       )}

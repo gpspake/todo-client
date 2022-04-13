@@ -3,15 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faPlus } from '@fortawesome/free-solid-svg-icons'
 import { Link } from 'react-router-dom'
 import classNames from 'classnames'
-
-import { TodoListLink } from './TodoListLink'
 import { useDeleteTodoList, useFetchTodoLists } from '../utils/todo-hooks'
+import {TodoListLink} from "./TodoListLink";
 
 export const TodoLists = () => {
-  
-  const { 
+
+  const {
     // status: fetchTodoListsStatus,
-    data: todoLists, 
+    data: todoLists,
     // error: fetchTodoListsError
   } = useFetchTodoLists()
 
@@ -21,14 +20,14 @@ export const TodoLists = () => {
     <>
       <Link className="block flex align-items-center mt-8 " to="/todo/new">
         <span className="fa-layers fa-fw fa-3x block m-auto group">
-          <FontAwesomeIcon 
-            icon={faCircle} 
-            className="transition-all duration-200 ease-in-out text-teal-500 group-hover:text-teal-600" 
+          <FontAwesomeIcon
+            icon={faCircle}
+            className="transition-all duration-200 ease-in-out text-teal-500 group-hover:text-teal-600"
           />
           <FontAwesomeIcon icon={faPlus} inverse transform="shrink-8" />
         </span>
       </Link>
-      
+
       {todoLists && !!todoLists.length && (
         <div className="max-w-sm rounded overflow-hidden shadow-lg bg-white mx-auto mt-8 border border-gray-300">
           <ul>

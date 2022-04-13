@@ -1,26 +1,21 @@
-import React from 'react'
-import { Router } from 'react-router-dom'
-import { useAuth0 } from './utils/hooks'
-import { Main } from './components/Main'
-import { Nav } from './components/Nav'
-import history from './utils/history'
-import './tailwind.generated.css'
-import { PreviewTodoList } from './components/PreviewTodoList'
+import React from 'react';
+import {BrowserRouter as Router} from 'react-router-dom'
+import {Nav} from "./components/Nav";
+import {Main} from "./components/Main";
+import { useAuth0 } from './utils/react-auth0-wrapper';
 
 function App() {
-  const { isAuthenticated, loading } = useAuth0()
+  const { isAuthenticated, isLoading } = useAuth0();
 
-  if (loading === undefined && isAuthenticated === undefined) {
-    return <div>Loading...</div>
-  }
+  if (isLoading === undefined && isAuthenticated === undefined) return <div>Loading...</div>
 
   return (
-    <Router history={history}>
-      <Nav />
-      {!loading && isAuthenticated && <Main />}
-      {isAuthenticated !== undefined && !isAuthenticated && <PreviewTodoList />}
+    <Router>
+      <Nav/>
+      {!isLoading && isAuthenticated && <Main/>}
     </Router>
-  )
+  );
 }
 
-export default App
+export default App;
+

@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useAuth0 } from '../utils/hooks'
 import { ProfileIcon } from './ProfileIcon'
 import Login from './Login'
+import { useAuth0 } from '../utils/react-auth0-wrapper';
 
 export const Nav = () => {
   const { isAuthenticated, logout, user } = useAuth0()
