@@ -1,7 +1,7 @@
 import { TodoItem } from './TodoItem'
 
 export class TodoList {
-  id: number = 0
-  name: string = ''
+  id = 0
+  name = ''
   todoItems: TodoItem[] = []
 }

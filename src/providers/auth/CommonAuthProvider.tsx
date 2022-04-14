@@ -9,7 +9,7 @@ const AuthContext = React.createContext<{
   isTokenSet: boolean,
   isAuthenticated: boolean,
   isLoading: boolean,
-  getAccessTokenSilently?: (opts?: GetTokenSilentlyOptions) => Promise<any>
+  getAccessTokenSilently?: (opts?: GetTokenSilentlyOptions) => Promise<string>
 }>({
   isTokenSet: false,
   isAuthenticated: false,

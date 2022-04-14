@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircle, faCircleNotch, faList } from '@fortawesome/free-solid-svg-icons'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
-import { TodoList } from './TodoList'
+import { TodoList as TodoListComponent } from './TodoList'
 import { TodoListName } from './TodoListName'
 import {
   useAddTodoItem,
@@ -13,23 +13,42 @@ import {
   useUpdateTodoItem,
   useUpdateTodoList
 } from '../utils/todo-hooks'
+import { TodoList } from '../models/TodoList';
 
 export const EditTodoList = () => {
   type TodoListParams = { todoListId: string }
   const { todoListId: todoListIdParam } = useParams<TodoListParams>()
-  return todoListIdParam && <EditTodoListForm todoListId={+todoListIdParam} />
+
+  if (todoListIdParam) {
+    const { status, data: todoList } = useFetchTodoList(+todoListIdParam)
+
+    return (
+      <>
+        {status !== 'success' && (
+          <FontAwesomeIcon
+            icon={faCircleNotch}
+            size="2x"
+            spin
+            className="block mx-auto mt-8 text-teal-500"
+          />
+        )}
+
+        {status === 'success' && todoList && <EditTodoListForm todoList={todoList} />}
+      </>
+    )
+  }
 }
 
 type EditTodoListFormProps = {
-  todoListId: number
+  todoList: TodoList
 }
 
 export const EditTodoListForm = (props: EditTodoListFormProps) => {
-  const {todoListId} = props
-  const { status, data: todoList } = useFetchTodoList(todoListId)
+  const {todoList} = props
+  const {id: todoListId} = todoList
   const { mutateAsync: _deleteTodoItem} = useDeleteTodoItem()
   const { mutateAsync: _updateTodoItem} = useUpdateTodoItem()
-  const { mutateAsync: _addTodoItem} = useAddTodoItem(todoList!)
+  const { mutateAsync: _addTodoItem} = useAddTodoItem(todoList)
   const { mutateAsync: _updateTodoList} = useUpdateTodoList()
 
   const addTodoItem = async (todoItem: TodoItem) => {
@@ -37,7 +56,7 @@ export const EditTodoListForm = (props: EditTodoListFormProps) => {
   }
 
   const setTodoListName = async (name: string) => {
-    await _updateTodoList({ ...todoList!, name })
+    await _updateTodoList({ ...todoList, name })
   }
 
   return (
@@ -52,15 +71,6 @@ export const EditTodoListForm = (props: EditTodoListFormProps) => {
         </span>
       </Link>
 
-      {status !== 'success' && (
-        <FontAwesomeIcon
-          icon={faCircleNotch}
-          size="2x"
-          spin
-          className="block mx-auto mt-8 text-teal-500"
-        />
-      )}
-
       {!!todoList && (
         <>
           <TodoListName
@@ -68,7 +78,7 @@ export const EditTodoListForm = (props: EditTodoListFormProps) => {
             setTodoListName={setTodoListName}
           />
           <TodoInput addTodoItem={addTodoItem} />
-          <TodoList
+          <TodoListComponent
             todoItems={todoList.todoItems}
             updateTodoItem={_updateTodoItem}
             deleteTodoItem={_deleteTodoItem}

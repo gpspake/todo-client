@@ -23,7 +23,7 @@ export const TodoListName = (props: ITodoListItemProps) => {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     const newTodoItemInputElement = document.getElementById('todo-list-name-input')
     const isFocused = (document.activeElement === newTodoItemInputElement)
-    
+
     if(isFocused) {
       if (event.key === 'Enter') {
         event.preventDefault()
@@ -48,9 +48,9 @@ export const TodoListName = (props: ITodoListItemProps) => {
   return (
     <div className="text-center text-teal-500 mt-5 ">
       {!editingTodoListName && (
-        <button 
-          type="button" 
-          className="font-thin text-4xl group relative max-w-sm" 
+        <button
+          type="button"
+          className="font-thin text-4xl group relative max-w-sm"
           onClick={() => {setEditingTodoListName(true)}}
         >
           <h1 className="inline hover:text-teal-600 transition-all duration-200 ease-in-out">

@@ -14,7 +14,7 @@ export const TodoPreview = () => {
       return loginWithRedirect()
     }
   }
-  
+
   const [todoItems, setTodoItems] = useState<TodoItem[]>( [
     { id: 1, name: 'Change the world', isComplete: false, todoListId: 0 },
     { id: 2, name: 'Accomplish your goals', isComplete: false, todoListId: 0 },
@@ -28,14 +28,14 @@ export const TodoPreview = () => {
   return (
     <>
       <TodoInput addTodoItem={addTodo} placeHolder="Create beautiful lists" />
-      <TodoList 
+      <TodoList
         todoItems={todoItems}
-        updateTodoItem={() => {}}
-        deleteTodoItem={() => {}}
+        updateTodoItem={() => undefined}
+        deleteTodoItem={() => undefined}
       />
       <button
         onClick={loginHandler}
-        type="button" 
+        type="button"
         className="bg-teal-500 text-white p-4 rounded mx-auto block mt-10"
       >
         Login to get started

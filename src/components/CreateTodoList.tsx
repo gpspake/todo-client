@@ -15,7 +15,7 @@ export const CreateTodoList = () => {
     { ...new TodoList(), name: format(new Date(), 'PPPP') }
   )
 
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   const { mutateAsync, /* status, data, error */ } = useAddTodoList()
 

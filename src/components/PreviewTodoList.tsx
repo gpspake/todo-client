@@ -5,7 +5,7 @@ import { TodoList } from './TodoList'
 import { TodoListName } from './TodoListName'
 
 export const PreviewTodoList = () => {
-  
+
   const [todoList, setTodoList] = useState({
     id: 0,
     name: 'Create Beautiful Lists',
@@ -39,13 +39,13 @@ export const PreviewTodoList = () => {
   const setTodoListName = (name: string) => {
     setTodoList({ ...todoList, name })
   }
-  
+
   const updateTodoItem = (todoItem: TodoItem) => {
-    
+    return todoItem
   }
 
   const deleteTodoItem = (todoItemId: number) => {
-
+    return todoItemId
   }
 
   return (
