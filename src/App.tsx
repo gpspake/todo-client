@@ -1,13 +1,12 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {BrowserRouter as Router} from 'react-router-dom'
 import {Nav} from "./components/Nav";
 import {Main} from "./components/Main";
-import { useAuth } from './components/AuthProvider';
+import { useAuth } from './providers/auth';
 
 function App() {
 
   const { isAuthenticated, isLoading, isTokenSet} = useAuth();
-  if (isLoading === undefined && isAuthenticated === undefined) return <div>Loading...</div>
 
   return (
     <Router>
