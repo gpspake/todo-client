@@ -15,26 +15,29 @@ import {
 } from '../utils/todo-hooks'
 
 export const EditTodoList = () => {
-
-  type TodoListParams = {
-    todoListId: string;
-  };
-
+  type TodoListParams = { todoListId: string }
   const { todoListId: todoListIdParam } = useParams<TodoListParams>()
-  const todoListId = +todoListIdParam
+  return todoListIdParam && <EditTodoListForm todoListId={+todoListIdParam} />
+}
 
+type EditTodoListFormProps = {
+  todoListId: number
+}
+
+export const EditTodoListForm = (props: EditTodoListFormProps) => {
+  const {todoListId} = props
   const { status, data: todoList } = useFetchTodoList(todoListId)
-  const { mutateAsync: deleteTodoItemMutation} = useDeleteTodoItem()
-  const { mutateAsync: updateTodoItemMutation} = useUpdateTodoItem()
-  const { mutateAsync: addTodoItemMutation} = useAddTodoItem(todoList!)
-  const { mutateAsync: updateTodoListMutation} = useUpdateTodoList()
+  const { mutateAsync: _deleteTodoItem} = useDeleteTodoItem()
+  const { mutateAsync: _updateTodoItem} = useUpdateTodoItem()
+  const { mutateAsync: _addTodoItem} = useAddTodoItem(todoList!)
+  const { mutateAsync: _updateTodoList} = useUpdateTodoList()
 
   const addTodoItem = async (todoItem: TodoItem) => {
-    await addTodoItemMutation({ ...todoItem, todoListId })
+    await _addTodoItem({ ...todoItem, todoListId })
   }
 
   const setTodoListName = async (name: string) => {
-    await updateTodoListMutation({ ...todoList!, name })
+    await _updateTodoList({ ...todoList!, name })
   }
 
   return (
@@ -67,8 +70,8 @@ export const EditTodoList = () => {
           <TodoInput addTodoItem={addTodoItem} />
           <TodoList
             todoItems={todoList.todoItems}
-            updateTodoItem={updateTodoItemMutation}
-            deleteTodoItem={deleteTodoItemMutation}
+            updateTodoItem={_updateTodoItem}
+            deleteTodoItem={_deleteTodoItem}
           />
         </>
       )}
