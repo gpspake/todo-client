@@ -2,18 +2,13 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
-import { Auth0Provider } from '@auth0/auth0-react'
+import { AuthProvider } from './components/AuthProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <Auth0Provider
-      domain={import.meta.env.VITE_AUTH0_DOMAIN as string}
-      clientId={import.meta.env.VITE_AUTH0_CLIENT_ID as string}
-      redirectUri={window.location.origin}
-      audience={import.meta.env.VITE_AUTH0_AUDIENCE as string}
-    >
+    <AuthProvider>
       <App />
-    </Auth0Provider>
+    </AuthProvider>
   </React.StrictMode>,
   document.getElementById('root')
 )
