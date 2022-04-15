@@ -14,7 +14,7 @@ export const Nav = () => {
   }
 
   return (
-    <nav className="flex items-center justify-between bg-teal-500 p-6">
+    <nav className="flex items-center justify-between bg-teal-500 p-6 h-20">
       <div className="flex items-center flex-shrink-0 text-white mr-6">
         <Link to="/" className="inline-flex">
           <svg
