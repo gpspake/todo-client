@@ -141,12 +141,12 @@ export const TodoListItem = (props: ITodoListItemProps) => {
             <>
               <TextareaAutosize
                 id={`todoItem-${todoItem.id}-input`}
-                className="form-textarea block w-full border-0 resize-none focus:shadow-none p-0 ml-4"
+                className="form-textarea block w-full border-0 resize-none focus:shadow-none p-0 ml-4 focus:ring-0"
                 placeholder="Enter some long form content."
                 value={name}
                 onChange={onTodoItemNameChange}
                 onKeyDown={handleKeyDown}
-                inputRef={(node) => {
+                ref={(node) => {
                   if (node) {
                     node.focus()
                   }

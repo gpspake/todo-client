@@ -67,12 +67,12 @@ export const TodoListName = (props: ITodoListItemProps) => {
         <div className="relative m-auto">
           <TextareaAutosize
             id="todo-list-name-input"
-            className="m-auto form-textarea block border-0 font-thin resize-none text-4xl focus:shadow-none p-0 text-center max-w-sm"
+            className="m-auto form-textarea block border-0 font-thin resize-none text-4xl focus:shadow-none p-0 text-center max-w-sm focus:ring-0"
             placeholder="Enter a name for this list"
             value={todoListName}
             onChange={onTodoListNameChange}
             onKeyDown={handleKeyDown}
-            inputRef={(node: HTMLTextAreaElement) => {
+            ref={(node: HTMLTextAreaElement) => {
               if (node) {
                 node.focus()
               }
