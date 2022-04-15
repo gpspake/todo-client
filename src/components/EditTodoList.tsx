@@ -1,108 +1,117 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCircle, faCircleNotch, faList } from '@fortawesome/free-solid-svg-icons'
+import { faCircle, faList } from '@fortawesome/free-solid-svg-icons'
 import { TodoItem } from '../models/TodoItem'
 import { TodoInput } from './TodoInput'
 import { TodoList as TodoListComponent } from './TodoList'
 import { TodoListName } from './TodoListName'
+import { TodoList } from '../models/TodoList'
+import { Loading } from './Loading'
+import { useAuth } from '../providers/auth'
 import {
   useAddTodoItem,
   useDeleteTodoItem,
   useFetchTodoList,
   useUpdateTodoItem,
-  useUpdateTodoList
+  useUpdateTodoList,
 } from '../utils/todo-hooks'
-import { TodoList } from '../models/TodoList';
+import axios from 'axios';
 
-export const EditTodoList = () => {
-  type TodoListParams = { todoListId: string }
-  const { todoListId: todoListIdParam } = useParams<TodoListParams>()
-
-  if (todoListIdParam) {
-    const { status, data: todoList } = useFetchTodoList(+todoListIdParam)
-
-    return (
-      <>
-        {status !== 'success' && (
-          <>
-            <div className="block flex align-items-center mt-5">
-              <span className="fa-fw fa-3x block m-auto group">
-                <FontAwesomeIcon
-                  icon={faCircleNotch}
-                  spin
-                  className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
-                />
-              </span>
-            </div>
-          </>
-        )}
-
-        {status === 'success' && todoList && <EditTodoListForm todoList={todoList} />}
-      </>
-    )
-  } else {
-    return (
-      <Link className="block flex align-items-center mt-8" to="/">
-        <span className="fa-layers fa-fw fa-3x block m-auto group">
-          <FontAwesomeIcon
-            icon={faCircle}
-            spin
-            className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
-          />
-          <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
-        </span>
-      </Link>
-    )
-  }
+type TodoListProviderProps = {
+  todoListId: number
 }
 
-type EditTodoListFormProps = {
-  todoList: TodoList
-}
-
-export const EditTodoListForm = (props: EditTodoListFormProps) => {
-  const {todoList} = props
-  const {id: todoListId} = todoList
-  const { mutateAsync: _deleteTodoItem} = useDeleteTodoItem()
-  const { mutateAsync: _updateTodoItem} = useUpdateTodoItem()
-  const { mutateAsync: _addTodoItem} = useAddTodoItem(todoList)
-  const { mutateAsync: _updateTodoList} = useUpdateTodoList()
-
-  const addTodoItem = async (todoItem: TodoItem) => {
-    await _addTodoItem({ ...todoItem, todoListId })
-  }
-
-  const setTodoListName = async (name: string) => {
-    await _updateTodoList({ ...todoList, name })
-  }
-
+export const TodoListProvider = (props: TodoListProviderProps) => {
+  const { data: todoList } = useFetchTodoList(props.todoListId)
   return (
     <>
-      {!!todoList && (
-        <>
-          <Link className="block flex align-items-center mt-8" to="/">
-            <span className="fa-layers fa-fw fa-3x block m-auto group">
-              <FontAwesomeIcon
-                icon={faCircle}
-                className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
-              />
-              <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
-            </span>
-          </Link>
-
-          <TodoListName
-            todoListName={todoList.name}
-            setTodoListName={setTodoListName}
-          />
-          <TodoInput addTodoItem={addTodoItem} />
-          <TodoListComponent
-            todoItems={todoList.todoItems}
-            updateTodoItem={_updateTodoItem}
-            deleteTodoItem={_deleteTodoItem}
-          />
-        </>
-      )}
+      {todoList && <AuthenticatedEditTodoList todoList={todoList}/>}
+      {!todoList && <Loading />}
     </>
   )
 }
+
+export const TodoListIdProvider = () => {
+  type TodoListParams = { todoListId: string }
+  const { todoListId: todoListIdParam } = useParams<TodoListParams>()
+  const { isTokenSet} = useAuth();
+  return (
+    <>
+      {isTokenSet && todoListIdParam && <TodoListProvider todoListId={+todoListIdParam}/>}
+    </>
+  )
+}
+
+type AuthenticatedEditTodoListProps = {
+  todoList: TodoList
+}
+
+export const AuthenticatedEditTodoList = (props: AuthenticatedEditTodoListProps) => {
+  const { todoList } = props
+  const { mutateAsync: deleteTodoItem } = useDeleteTodoItem()
+  const { mutateAsync: updateTodoItem } = useUpdateTodoItem()
+  const { mutateAsync: addTodoItem } = useAddTodoItem()
+  const { mutateAsync: updateTodoList } = useUpdateTodoList()
+
+  const _addTodoItem = async (todoItem: TodoItem) => {
+    await addTodoItem({ ...todoItem, todoListId: todoList.id })
+  };
+
+  const setTodoListName = async (name: string) => {
+    await updateTodoList({ ...todoList, name })
+  };
+
+  return (
+    <EditTodoList
+      todoList={todoList}
+      addTodoItem={_addTodoItem}
+      deleteTodoItem={deleteTodoItem}
+      updateTodoItem={updateTodoItem}
+      setTodoListName={setTodoListName}
+    />
+  )
+};
+
+type EditTodoListProps = {
+  todoList: TodoList
+  deleteTodoItem: (todoItemId: number) => void
+  updateTodoItem: (todoItem: TodoItem) => void
+  addTodoItem: (todoItem: TodoItem) => void
+  setTodoListName: (name: string) => void
+}
+
+export const EditTodoList = (props: EditTodoListProps) => {
+
+  const {
+    todoList,
+    deleteTodoItem,
+    updateTodoItem,
+    addTodoItem,
+    setTodoListName,
+  } = props
+
+  return (
+    <>
+      <Link className='block flex align-items-center mt-8' to='/'>
+        <span className='fa-layers fa-fw fa-3x block m-auto group'>
+          <FontAwesomeIcon
+            icon={faCircle}
+            className='text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600'
+          />
+          <FontAwesomeIcon icon={faList} inverse transform='shrink-8' />
+        </span>
+      </Link>
+      <TodoListName
+        todoListName={todoList.name}
+        setTodoListName={setTodoListName}
+      />
+      <TodoInput addTodoItem={addTodoItem} />
+      <TodoListComponent
+        todoItems={todoList.todoItems}
+        updateTodoItem={updateTodoItem}
+        deleteTodoItem={deleteTodoItem}
+      />
+    </>
+  );
+};

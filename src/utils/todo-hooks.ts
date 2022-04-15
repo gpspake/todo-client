@@ -46,10 +46,11 @@ export const useDeleteTodoList = () => useMutation(
   }
 )
 
-export const useAddTodoItem = (todoList: TodoList) => useMutation(
+export const useAddTodoItem = () => useMutation(
   addTodoItem,
   {
     onSuccess: savedTodoItem => {
+      const todoList = queryClient.getQueryData(['todoList', savedTodoItem.todoListId]) as TodoList
       const todoItems = [...todoList.todoItems, savedTodoItem]
       queryClient.setQueryData(
         ['todoList', savedTodoItem.todoListId],

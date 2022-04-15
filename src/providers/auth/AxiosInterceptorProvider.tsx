@@ -7,7 +7,13 @@ const AxiosInterceptorContext = React.createContext<{ isTokenSet: boolean }>({ i
 const setAxiosTokenInterceptor = async (accessToken: string): Promise<void> => {
   axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
     if (accessToken) {
-      axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+      if(config.headers) {
+        config.headers['Authorization'] = `Bearer ${accessToken}`
+      } else {
+        config.headers = {
+          'Authorization': `Bearer ${accessToken}`
+        }
+      }
     }
     return config;
   });
