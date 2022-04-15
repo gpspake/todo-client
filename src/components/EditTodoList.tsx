@@ -25,16 +25,34 @@ export const EditTodoList = () => {
     return (
       <>
         {status !== 'success' && (
-          <FontAwesomeIcon
-            icon={faCircleNotch}
-            size="2x"
-            spin
-            className="block mx-auto mt-8 text-teal-500"
-          />
+          <>
+            <div className="block flex align-items-center mt-5">
+              <span className="fa-fw fa-3x block m-auto group">
+                <FontAwesomeIcon
+                  icon={faCircleNotch}
+                  spin
+                  className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
+                />
+              </span>
+            </div>
+          </>
         )}
 
         {status === 'success' && todoList && <EditTodoListForm todoList={todoList} />}
       </>
+    )
+  } else {
+    return (
+      <Link className="block flex align-items-center mt-8" to="/">
+        <span className="fa-layers fa-fw fa-3x block m-auto group">
+          <FontAwesomeIcon
+            icon={faCircle}
+            spin
+            className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
+          />
+          <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
+        </span>
+      </Link>
     )
   }
 }
@@ -61,18 +79,18 @@ export const EditTodoListForm = (props: EditTodoListFormProps) => {
 
   return (
     <>
-      <Link className="block flex align-items-center mt-8" to="/">
-        <span className="fa-layers fa-fw fa-3x block m-auto group">
-          <FontAwesomeIcon
-            icon={faCircle}
-            className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
-          />
-          <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
-        </span>
-      </Link>
-
       {!!todoList && (
         <>
+          <Link className="block flex align-items-center mt-8" to="/">
+            <span className="fa-layers fa-fw fa-3x block m-auto group">
+              <FontAwesomeIcon
+                icon={faCircle}
+                className="text-teal-500 transition-all duration-200 ease-in-out group-hover:text-teal-600"
+              />
+              <FontAwesomeIcon icon={faList} inverse transform="shrink-8" />
+            </span>
+          </Link>
+
           <TodoListName
             todoListName={todoList.name}
             setTodoListName={setTodoListName}
