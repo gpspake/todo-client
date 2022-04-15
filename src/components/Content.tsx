@@ -1,8 +1,8 @@
 import React from 'react'
 import { Routes, Route } from 'react-router-dom'
 import { TodoLists } from './TodoLists'
-import { EditTodoList } from './EditTodoList'
 import { CreateTodoList } from './CreateTodoList'
+import { EditTodoList } from './EditTodoList';
 
 export const Content = () => {
   return (
