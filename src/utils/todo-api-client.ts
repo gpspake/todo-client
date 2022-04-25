@@ -55,7 +55,7 @@ export const updateTodoItem = async (todoItem: TodoItem) => {
   return data
 }
 
-export const deleteTodoItem = async (todoItemId: number): Promise<TodoList> => {
+export const deleteTodoItem = async (todoItemId: number): Promise<number> => {
   const { data } = await axios.delete(
     `/api/TodoItems/${todoItemId}`
   )

@@ -23,9 +23,9 @@ export const useAddTodoList = () => useMutation(
   }
 )
 
-export const useFetchTodoList = (todoListId: number) => useQuery(
+export const useFetchTodoList = (todoListId: number|string) => useQuery(
   ['todoList', todoListId],
-  () => fetchTodoList(todoListId)
+  () => fetchTodoList(+todoListId)
 )
 
 export const useUpdateTodoList = () => useMutation(
@@ -62,8 +62,8 @@ export const useAddTodoItem = () => useMutation(
 export const useUpdateTodoItem = () => useMutation(
   updateTodoItem,
   {
-    onSuccess: async () => {
-      await queryClient.refetchQueries(['todoList'])
+    onSuccess: async (updatedTodoItem) => {
+      await queryClient.refetchQueries(['todoList', updatedTodoItem.todoListId])
     }
   }
 )
@@ -71,8 +71,8 @@ export const useUpdateTodoItem = () => useMutation(
 export const useDeleteTodoItem = () => useMutation(
   deleteTodoItem,
   {
-    onSuccess: async () => {
-      await queryClient.refetchQueries(['todoList'])
+    onSuccess: async (todoListId) => {
+      await queryClient.refetchQueries(['todoList', todoListId])
     }
   }
 )
