@@ -16,7 +16,6 @@ import {
   useUpdateTodoItem,
   useUpdateTodoList,
 } from '../utils/todo-hooks'
-import axios from 'axios';
 
 type TodoListProviderProps = {
   todoListId: number

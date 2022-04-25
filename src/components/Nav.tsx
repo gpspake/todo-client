@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom'
 import { ProfileIcon } from './ProfileIcon'
 import Login from './Login'
 import { useAuth0 } from '@auth0/auth0-react';
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Nav = () => {
-  const { isAuthenticated, logout, user } = useAuth0()
+  const { isAuthenticated, logout, isLoading, user } = useAuth0()
 
   const logoutHandler = () => {
     if (logout) {
@@ -35,13 +37,22 @@ export const Nav = () => {
       </div>
 
       <div className="w-full block flex-grow flex items-center w-auto">
-        {isAuthenticated ? (
+        {isLoading && (
+          <FontAwesomeIcon
+            size="2x"
+            icon={faCircleNotch}
+            spin
+            className={`transition-all duration-200 text-slate-50 ml-auto opacity-50`}
+          />
+        )}
+        {!isLoading && !isAuthenticated && <Login />}
+        {!isLoading && isAuthenticated && (
           <div className="ml-auto">
             {user && (
               <ProfileIcon>
                 <div className="bg-white absolute rounded border right-0 mr-4 p-4 text-center shadow-lg z-10">
-                  <img 
-                    className="h-20 rounded-full mx-auto" 
+                  <img
+                    className="h-20 rounded-full mx-auto"
                     src={user.picture}
                     alt=""
                   />
@@ -58,7 +69,7 @@ export const Nav = () => {
               </ProfileIcon>
             )}
           </div>
-        ) : <Login />}
+        )}
       </div>
     </nav>
   )
