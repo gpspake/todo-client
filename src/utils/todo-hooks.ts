@@ -31,8 +31,28 @@ export const useFetchTodoList = (todoListId: number|string) => useQuery(
 export const useUpdateTodoList = () => useMutation(
   updateTodoList,
   {
-    onSuccess: async () => {
-      await queryClient.refetchQueries(['todoList'])
+    onSuccess: async (updatedTodoList: TodoList) => {
+      const todoLists = queryClient.getQueryData(['todoLists']) as TodoList[]
+
+      const index = todoLists.findIndex(todoList => {
+        return todoList.id === updatedTodoList.id;
+      });
+
+      const updatedTodoLists = [
+        ...todoLists.slice(0, index),
+        updatedTodoList,
+        ...todoLists.slice(index + 1),
+      ]
+
+      queryClient.setQueryData(
+        ['todoList', updatedTodoList.id],
+        updatedTodoList
+      )
+
+      queryClient.setQueryData(
+        ['todoLists'],
+        updatedTodoLists
+      )
     }
   }
 )
@@ -54,7 +74,8 @@ export const useAddTodoItem = () => useMutation(
       const todoItems = [...todoList.todoItems, savedTodoItem]
       queryClient.setQueryData(
         ['todoList', savedTodoItem.todoListId],
-        { ...todoList, todoItems })
+        { ...todoList, todoItems }
+      )
     }
   }
 )

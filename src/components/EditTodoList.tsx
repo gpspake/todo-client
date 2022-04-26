@@ -17,62 +17,54 @@ import {
   useUpdateTodoList,
 } from '../utils/todo-hooks'
 
-type TodoListProviderProps = {
-  todoListId: number
-}
-
-export const TodoListProvider = (props: TodoListProviderProps) => {
-  const { data: todoList } = useFetchTodoList(props.todoListId)
-  return (
-    <>
-      {todoList && <AuthenticatedEditTodoList todoList={todoList}/>}
-      {!todoList && <Loading />}
-    </>
-  )
-}
-
-export const TodoListIdProvider = () => {
+export const EditTodoList = () => {
   type TodoListParams = { todoListId: string }
   const { todoListId: todoListIdParam } = useParams<TodoListParams>()
-  const { isTokenSet} = useAuth();
+  const { isTokenSet } = useAuth();
   return (
     <>
-      {isTokenSet && todoListIdParam && <TodoListProvider todoListId={+todoListIdParam}/>}
+      {isTokenSet && todoListIdParam && <AuthenticatedEditTodoList todoListId={+todoListIdParam}/>}
+      {!isTokenSet && <Loading />}
     </>
   )
 }
 
 type AuthenticatedEditTodoListProps = {
-  todoList: TodoList
+  todoListId: number
 }
 
 export const AuthenticatedEditTodoList = (props: AuthenticatedEditTodoListProps) => {
-  const { todoList } = props
+  const { data: todoList } = useFetchTodoList(props.todoListId)
   const { mutateAsync: deleteTodoItem } = useDeleteTodoItem()
   const { mutateAsync: updateTodoItem } = useUpdateTodoItem()
   const { mutateAsync: addTodoItem } = useAddTodoItem()
   const { mutateAsync: updateTodoList } = useUpdateTodoList()
 
-  const _addTodoItem = async (todoItem: TodoItem) => {
-    await addTodoItem({ ...todoItem, todoListId: todoList.id })
+  const _addTodoItem = async (todoItem: TodoItem, todoListId: number) => {
+    await addTodoItem({ ...todoItem, todoListId })
   };
 
-  const setTodoListName = async (name: string) => {
+  const setTodoListName = async (name: string, todoList: TodoList) => {
     await updateTodoList({ ...todoList, name })
   };
 
   return (
-    <EditTodoList
-      todoList={todoList}
-      addTodoItem={_addTodoItem}
-      deleteTodoItem={deleteTodoItem}
-      updateTodoItem={updateTodoItem}
-      setTodoListName={setTodoListName}
-    />
+    <>
+      {!!todoList && (
+        <TodoListForm
+          todoList={todoList}
+          addTodoItem={(todoItem) => _addTodoItem(todoItem, todoList.id)}
+          deleteTodoItem={deleteTodoItem}
+          updateTodoItem={updateTodoItem}
+          setTodoListName={(name) => setTodoListName(name, todoList)}
+        />
+      )}
+      {!todoList && <Loading />}
+    </>
   )
 };
 
-type EditTodoListProps = {
+type TodoListFormProps = {
   todoList: TodoList
   deleteTodoItem: (todoItemId: number) => void
   updateTodoItem: (todoItem: TodoItem) => void
@@ -80,7 +72,7 @@ type EditTodoListProps = {
   setTodoListName: (name: string) => void
 }
 
-export const EditTodoList = (props: EditTodoListProps) => {
+export const TodoListForm = (props: TodoListFormProps) => {
 
   const {
     todoList,
