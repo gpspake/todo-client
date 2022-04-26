@@ -46,18 +46,20 @@ const AuthenticatedTodoLists = () => {
   )
 }
 
+const OfflineTodoLists = () => (
+  <div className="text-center mt-8 text-teal-500">
+    <p>Offline demo coming soon</p>
+    <p>Please log in</p>
+  </div>
+)
+
 export const TodoLists = () => {
   const { isAuthenticated, isLoading } = useAuth0()
   return (
     <>
       {isLoading && <Loading />}
       {!isLoading && isAuthenticated && <AuthenticatedTodoLists />}
-      {!isLoading && !isAuthenticated && (
-        <div className="text-center mt-8 text-teal-500">
-          <p>Offline demo coming soon</p>
-          <p>Please log in</p>
-        </div>
-      )}
+      {!isLoading && !isAuthenticated && <OfflineTodoLists/>}
     </>
   )
 }
