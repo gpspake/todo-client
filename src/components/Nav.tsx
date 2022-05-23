@@ -31,7 +31,7 @@ export const Nav = () => {
             />
           </svg>
           <span className="text-xl tracking-tight">
-            <span className="font-thin">Todo</span><span className="font-semibold">lu</span>
+            <span className="font-thin">Todo</span><span className="font-semibold">list</span>
           </span>
         </Link>
       </div>
