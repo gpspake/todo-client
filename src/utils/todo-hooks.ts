@@ -18,7 +18,9 @@ export const useAddTodoList = () => useMutation(
   addTodoList,
   {
     onSuccess: async savedTodoList => {
-      await queryClient.setQueryData(['todoList', savedTodoList.id], savedTodoList)
+      const todoLists = queryClient.getQueryData(['todoLists']) as TodoList[]
+      queryClient.setQueryData(['todoList', savedTodoList.id], savedTodoList)
+      queryClient.setQueryData(['todoLists'], [...todoLists, savedTodoList])
     }
   }
 )
