@@ -8,9 +8,9 @@ interface ITodoInputProps {
 }
 
 export const TodoInput = (props: ITodoInputProps) => {
-  
+
   const [name, setName] = useState('')
-  
+
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setName(event.target.value)
   }
@@ -18,7 +18,7 @@ export const TodoInput = (props: ITodoInputProps) => {
   const handleKeyDown = (event: React.KeyboardEvent) => {
     const newTodoItemInputElement = document.getElementById('new-todo-item-input')
     const isFocused = (document.activeElement === newTodoItemInputElement)
-    
+
     if(isFocused) {
       if(event.key === 'Enter') {
         event.preventDefault()
@@ -30,20 +30,20 @@ export const TodoInput = (props: ITodoInputProps) => {
       }
     }
   }
-  
+
   const onAddTodoItem = () => {
     if(name.length) {
       props.addTodoItem({ ...new TodoItem(), name })
       setName('')
     }
   }
-  
+
   return (
     <div className="flex items-center mx-auto justify-center md:py-0 border-gray-700 max-w-sm mt-5">
       <div className="flex flex-row rounded overflow-hidden w-full">
         <input
           id="new-todo-item-input"
-          className="py-3 px-4 text-gray-800 border-gray-300 border outline-none placeholder-gray-500 focus:bg-gray-100 w-full"
+          className="py-3 px-4 text-gray-800 border-gray-300 border outline-none placeholder-gray-500 focus:bg-gray-100 focus:border-slate-200 w-full"
           type="text"
           name="todo"
           value={name}
