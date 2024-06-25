@@ -6,6 +6,7 @@ import 'dotenv/config'
 export default defineConfig({
   plugins: [react()],
   server: {
+    port: 3000,
     proxy: {
       // with options
       '/api': {

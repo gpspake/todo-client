@@ -1,6 +1,6 @@
 import React from 'react'
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar'
-import ReactTooltip from 'react-tooltip'
+import { Tooltip } from 'react-tooltip'
 import { TodoList } from '../models/TodoList'
 
 interface ITodoListItemProps {
@@ -40,7 +40,7 @@ export const TodoListProgress = (props: ITodoListItemProps) => {
         />
       </span>
 
-      <ReactTooltip
+      <Tooltip
         id='toolTip'
         backgroundColor="white"
         border
