@@ -2,6 +2,10 @@
   "name": "todolist-client",
   "private": true,
   "version": "1.0.0",
+  "engines": {
+    "node": "^20.15.0",
+    "yarn": ">=1.17.0"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
