@@ -12,8 +12,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     <Auth0Provider
       domain={import.meta.env.VITE_AUTH0_DOMAIN as string}
       clientId={import.meta.env.VITE_AUTH0_CLIENT_ID as string}
-      redirectUri={window.location.origin}
-      audience={import.meta.env.VITE_AUTH0_AUDIENCE as string}
+      authorizationParams={{
+        redirectUri: window.location.origin,
+        audience: import.meta.env.VITE_AUTH0_AUDIENCE as string
+      }}
     >
       <AxiosInterceptorProvider>
         <CommonAuthProvider>
