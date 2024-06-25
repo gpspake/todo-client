@@ -30,7 +30,7 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.24.0",
     "react-textarea-autosize": "^8.5.3",
-    "react-tooltip": "^5.27.0"
+    "react-tooltip": "^4.2.21"
   },
   "devDependencies": {
     "@types/react": "^18.3.3",

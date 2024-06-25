@@ -11,7 +11,7 @@ export const Nav = () => {
 
   const logoutHandler = () => {
     if (logout) {
-      return logout({ returnTo: window.location.origin })
+      return logout({logoutParams: { returnTo: window.location.origin }})
     }
   }
 
@@ -53,7 +53,7 @@ export const Nav = () => {
                 <div className="bg-white absolute rounded border right-0 mr-4 p-4 text-center shadow-lg z-10">
                   <img
                     className="h-20 rounded-full mx-auto"
-                    src={user.picture}
+                    src={user.picture || ""}
                     alt=""
                   />
                   <p className="text-gray-800 text-lg capitalize mt-4">{user.nickname}</p>

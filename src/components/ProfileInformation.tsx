@@ -1,9 +1,9 @@
 import React, { useCallback, useEffect, useRef } from 'react'
 
-export const ProfileInformation: React.FC<{ onClose: () => void }> = (
+export const ProfileInformation: React.FC<{ onClose: () => void, children: React.ReactNode }> = (
   { onClose, children }
 ) => {
-  const ref = useRef(null)
+  const ref = useRef<HTMLDivElement>(null);
   const escapeListener = useCallback((e: KeyboardEvent) => {
     if (e.key === 'Escape') {
       onClose()
@@ -12,7 +12,7 @@ export const ProfileInformation: React.FC<{ onClose: () => void }> = (
 
   const clickListener = useCallback(
     (e: MouseEvent) => {
-      if (ref.current && !(ref.current as HTMLElement).contains(e.target as Node)) {
+      if (ref.current as HTMLDivElement && !(ref.current as HTMLDivElement).contains(e.target as Node)) {
         onClose?.() // using optional chaining here, change to onClose && onClose(), if required
       }
     },
