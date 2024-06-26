@@ -21,8 +21,8 @@ export const ProfileInformation: React.FC<{ onClose: () => void, children: React
 
   useEffect(() => {
     // Attach the listeners on component mount.
-    document.addEventListener('click', clickListener)
-    document.addEventListener('keyup', escapeListener)
+    document.addEventListener('click', clickListener, {capture: true})
+    document.addEventListener('keyup', escapeListener, {capture: true})
     // Detach the listeners on component unmount.
     return () => {
       document.removeEventListener('click', clickListener)
