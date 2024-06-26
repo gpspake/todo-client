@@ -5,6 +5,9 @@ import 'dotenv/config'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
+  build: {
+    outDir: 'build'
+  },
   server: {
     port: 3000,
     proxy: {
