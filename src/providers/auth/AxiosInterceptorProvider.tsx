@@ -1,22 +1,19 @@
 import { useAuth0 } from '@auth0/auth0-react';
 import React, { useEffect, useState } from 'react';
-import axios, { AxiosRequestConfig } from 'axios';
+import axios, { AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
 
 const AxiosInterceptorContext = React.createContext<{ isTokenSet: boolean }>({ isTokenSet: false });
 
+const onRequest = (config: InternalAxiosRequestConfig, accessToken: string) => {
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`
+  }
+  return config;
+}
+
+
 const setAxiosTokenInterceptor = async (accessToken: string): Promise<void> => {
-  axios.interceptors.request.use(async (config: AxiosRequestConfig) => {
-    if (accessToken) {
-      if(config.headers) {
-        config.headers['Authorization'] = `Bearer ${accessToken}`
-      } else {
-        config.headers = {
-          'Authorization': `Bearer ${accessToken}`
-        }
-      }
-    }
-    return config;
-  });
+  axios.interceptors.request.use((config) => onRequest(config, accessToken));
 };
 
 export const useAxiosInterceptor = () => {
@@ -36,7 +33,9 @@ export const AxiosInterceptorProvider = ({ children }: AxiosInterceptorProviderP
   useEffect(() => {
     const getAccessToken = async () => {
       const audience = import.meta.env.VITE_AUTH0_AUDIENCE as string;
-      const accessToken = await getAccessTokenSilently({ audience });
+      const accessToken = await getAccessTokenSilently({
+        authorizationParams: { audience }
+      });
       await setAxiosTokenInterceptor(accessToken);
       setIsTokenSet(true);
     };
